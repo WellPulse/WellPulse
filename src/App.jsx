@@ -4,7 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend, PieChart, Pie, Cell, RadarChart, Radar,
   PolarGrid, PolarAngleAxis, AreaChart, Area
-} from "recharts";A
+} from "recharts";
 
 const SUPABASE_URL = "https://fkvnjfvrbmomerrkqxge.supabase.co";
 const SUPABASE_KEY = "sb_publishable_oM_JRsfb8PGe37SN--Yzmg_w0Qr8aIo";
