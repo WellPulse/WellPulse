@@ -11,22 +11,22 @@ const SUPABASE_KEY = "sb_publishable_oM_JRsfb8PGe37SN--Yzmg_w0Qr8aIo";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const QUESTIONS = [
-  { id: "stress", label: "How would you rate your stress level this week?", hint: "1 = Very stressed, 10 = Completely at ease", },
-  { id: "workload", label: "How manageable is your workload feeling?", hint: "1 = Completely overwhelmed, 10 = Very manageable",},
-  { id: "relationships", label: "How are your relationships with teammates?", hint: "1 = Very difficult, 10 = Excellent" },
-  { id: "manager", label: "How supported do you feel by your manager?", hint: "1 = Not supported, 10 = Fully supported"},
-  { id: "balance", label: "How is your work-life balance this week?", hint: "1 = No balance at all, 10 = Perfect balance",},
+  { id: "stress", label: "How would you rate your stress level this week?", hint: "1 = Very stressed, 10 = Completely at ease", icon: "🧠" },
+  { id: "workload", label: "How manageable is your workload feeling?", hint: "1 = Completely overwhelmed, 10 = Very manageable", icon: "📋" },
+  { id: "relationships", label: "How are your relationships with teammates?", hint: "1 = Very difficult, 10 = Excellent", icon: "🤝" },
+  { id: "manager", label: "How supported do you feel by your manager?", hint: "1 = Not supported, 10 = Fully supported", icon: "👥" },
+  { id: "balance", label: "How is your work-life balance this week?", hint: "1 = No balance at all, 10 = Perfect balance", icon: "⚖️" },
 ];
 
 const DEPTS = ["Engineering","Marketing","Sales","HR","Finance","Operations","Product","Design","Customer Success","Legal"];
 const COLORS = ["#0078D4","#00B294","#FF8C00","#E74856","#8764B8","#00B7C3","#FFB900","#E3008C"];
 const TOOLKIT_ITEMS = [
-  { id: 1, title: "4-7-8 Breathing", desc: "Inhale 4s, hold 7s, exhale 8s. Reduces stress instantly.", duration: "2 min", type: "breathing" },
-  { id: 2, title: "5-Minute Journal", desc: "Write 3 things you're grateful for today.", duration: "5 min", type: "journal" },
-  { id: 3, title: "Desk Stretches", desc: "Simple stretches to release tension at your desk.", duration: "3 min", type: "stretch" },
-  { id: 4, title: "Pomodoro Focus", desc: "Work 25 min, break 5 min. Boost productivity.", duration: "30 min", type: "focus" },
-  { id: 5, title: "Gratitude Pause", desc: "Name 3 small wins from today.", duration: "1 min", type: "mindset" },
-  { id: 6, title: "Walk Break", desc: "Step away from your screen for a quick walk.", duration: "10 min", type: "movement" },
+  { id: 1, title: "4-7-8 Breathing", icon: "🫁", desc: "Inhale 4s, hold 7s, exhale 8s. Reduces stress instantly.", duration: "2 min", type: "breathing" },
+  { id: 2, title: "5-Minute Journal", icon: "📝", desc: "Write 3 things you're grateful for today.", duration: "5 min", type: "journal" },
+  { id: 3, title: "Desk Stretches", icon: "🧘", desc: "Simple stretches to release tension at your desk.", duration: "3 min", type: "stretch" },
+  { id: 4, title: "Pomodoro Focus", icon: "⏱️", desc: "Work 25 min, break 5 min. Boost productivity.", duration: "30 min", type: "focus" },
+  { id: 5, title: "Gratitude Pause", icon: "🙏", desc: "Name 3 small wins from today.", duration: "1 min", type: "mindset" },
+  { id: 6, title: "Walk Break", icon: "🚶", desc: "Step away from your screen for a quick walk.", duration: "10 min", type: "movement" },
 ];
 
 function getWeekLabel() {
@@ -355,10 +355,10 @@ function LeadershipApp({ user, onLogout }) {
   }, []);
 
   const navItems = [
-    { id: "dashboard", label: "Dashboard" },
-    { id: "departments" label: "Departments" },
-    { id: "trends", label: "Trends" },
-    { id: "reports", label: "Reports" },
+    { id: "dashboard", icon: "📊", label: "Dashboard" },
+    { id: "departments", icon: "🏢", label: "Departments" },
+    { id: "trends", icon: "📈", label: "Trends" },
+    { id: "reports", icon: "📄", label: "Reports" },
   ];
 
   return (
@@ -462,7 +462,7 @@ function DashboardPage({ checkins, user }) {
 
       {checkins.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-icon"></div>
+          <div className="empty-icon">📊</div>
           <div className="empty-title">No data yet</div>
           <p>Share your company code <strong>{user.company_code}</strong> with employees so they can register and complete check-ins.</p>
         </div>
@@ -470,7 +470,7 @@ function DashboardPage({ checkins, user }) {
         <>
           <div className="charts-grid">
             <div className="card">
-              <div className="card-title"> Wellness by Category</div>
+              <div className="card-title">🎯 Wellness by Category</div>
               <ResponsiveContainer width="100%" height={220}>
                 <RadarChart data={radarData}>
                   <PolarGrid stroke="#EDEBE9" />
@@ -495,7 +495,7 @@ function DashboardPage({ checkins, user }) {
             </div>
           </div>
           <div className="card" style={{marginBottom:16}}>
-            <div className="card-title"> Department Risk Overview</div>
+            <div className="card-title">🏢 Department Risk Overview</div>
             <div className="table-wrap">
               <table className="wp-table">
                 <thead><tr><th>Department</th><th>Risk</th><th>Score</th><th>Stress</th><th>Workload</th><th>Relationships</th><th>Manager</th><th>Balance</th><th>Responses</th></tr></thead>
@@ -544,11 +544,11 @@ function DepartmentsPage({ checkins }) {
         <div className="page-sub">Category breakdown by department</div>
       </div>
       {barData.length === 0 ? (
-        <div className="empty-state"><div className="empty-icon"></div><div className="empty-title">No data yet</div></div>
+        <div className="empty-state"><div className="empty-icon">🏢</div><div className="empty-title">No data yet</div></div>
       ) : (
         <>
           <div className="card" style={{marginBottom:16}}>
-            <div className="card-title"> All Categories by Department</div>
+            <div className="card-title">📊 All Categories by Department</div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={barData} margin={{top:5,right:20,left:0,bottom:5}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#EDEBE9" />
@@ -648,7 +648,7 @@ function TrendsPage({ checkins }) {
       </div>
       <div className="charts-grid">
         <div className="card">
-          <div className="card-title"> Department Trends</div>
+          <div className="card-title">🏢 Department Trends</div>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={weeklyTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#EDEBE9"/>
@@ -659,7 +659,7 @@ function TrendsPage({ checkins }) {
           </ResponsiveContainer>
         </div>
         <div className="card">
-          <div className="card-title"> Category Trends</div>
+          <div className="card-title">🎯 Category Trends</div>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={categoryTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#EDEBE9"/>
@@ -743,9 +743,9 @@ function ReportsPage({ checkins, user }) {
 function EmployeeApp({ user, onLogout }) {
   const [page, setPage] = useState("checkin");
   const navItems = [
-    { id:"checkin", label:"Check-In" },
-    { id:"toolkit", label:"Wellness Toolkit" },
-    { id:"history", label:"My History" },
+    { id:"checkin", icon:"✅", label:"Check-In" },
+    { id:"toolkit", icon:"🛠️", label:"Wellness Toolkit" },
+    { id:"history", icon:"📊", label:"My History" },
   ];
   return (
     <div className="wp-app">
@@ -809,7 +809,7 @@ function CheckInPage({ user }) {
             <h2>Check-in complete!</h2>
             <p>Your responses for {currentWeek} have been recorded.<br/>Thank you for taking a moment to reflect.</p>
             <div style={{marginTop:20,padding:"14px",background:"var(--accent-light)",borderRadius:"var(--radius-lg)",fontSize:13,color:"var(--accent)"}}>
-               Visit the <strong>Wellness Toolkit</strong> for burnout prevention resources
+              💡 Visit the <strong>Wellness Toolkit</strong> for burnout prevention resources
             </div>
           </div>
         ) : (
@@ -938,7 +938,7 @@ function HistoryPage({ user }) {
         <div className="page-sub">Your personal check-in history over time</div>
       </div>
       {checkins.length===0 ? (
-        <div className="empty-state"><div className="empty-icon"></div><div className="empty-title">No check-ins yet</div><p>Complete your first weekly check-in to see your history.</p></div>
+        <div className="empty-state"><div className="empty-icon">📊</div><div className="empty-title">No check-ins yet</div><p>Complete your first weekly check-in to see your history.</p></div>
       ) : (
         <>
           <div className="card" style={{marginBottom:16}}>
@@ -954,7 +954,7 @@ function HistoryPage({ user }) {
             </ResponsiveContainer>
           </div>
           <div className="card">
-            <div className="card-title"> Check-In History</div>
+            <div className="card-title">📋 Check-In History</div>
             <table className="wp-table">
               <thead><tr><th>Week</th><th>Overall</th><th>Risk</th><th>Stress</th><th>Workload</th><th>Relationships</th><th>Manager</th><th>Balance</th></tr></thead>
               <tbody>
