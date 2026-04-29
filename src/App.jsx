@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 export default function WellPulse() {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
