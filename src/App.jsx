@@ -396,9 +396,6 @@ function getRisk(score) { return score >= 7 ? "low" : score >= 5 ? "medium" : "h
 function getRiskLabel(score) { return score >= 7 ? "Low Risk" : score >= 5 ? "Medium Risk" : "High Risk"; }
 function getRiskColor(score) { return score >= 7 ? "#5C7A5C" : score >= 5 ? "#C4956A" : "#A0522D"; }
 
-function getWeekLabel() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 1);
   const week = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
   return `Week ${week} · ${now.getFullYear()}`;
 }
