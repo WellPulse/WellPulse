@@ -277,8 +277,19 @@ export default function App() {
   }, []);
 
   async function loadProfile(uid) {
-    const { data } = await supabase.from("profiles").select("*").eq("id", uid).single();
-    setProfile(data);
+    try {
+      const { data, error } = await supabase.from("profiles").select("*").eq("id", uid).maybeSingle();
+      if (error) console.error("Profile error:", error);
+      if (data) {
+        setProfile(data);
+      } else {
+        // Profile missing — sign out so user can re-register cleanly
+        await supabase.auth.signOut();
+      }
+    } catch(e) {
+      console.error("loadProfile failed:", e);
+      await supabase.auth.signOut();
+    }
     setLoading(false);
   }
 
@@ -385,15 +396,22 @@ function LeadershipApp({ user, onLogout }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from("checkins").select("*").order("created_at",{ascending:true})
+    supabase.from("checkins").select("*").eq("company_code", user.company_code || "").order("created_at",{ascending:true})
       .then(({data})=>{ setCheckins(data||[]); setLoading(false); });
   }, []);
 
-  const nav = [
+  const analyticsNav = [
     { id:"dashboard", label:"Overview", d:<><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></> },
     { id:"departments", label:"Departments", d:<><path d="M3 21h18M6 21V7a1 1 0 011-1h10a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4"/></> },
     { id:"trends", label:"Trends", d:<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></> },
     { id:"reports", label:"Reports", d:<><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></> },
+  ];
+  const toolsNav = [
+    { id:"stress", label:"Stress Management", d:<><path d="M17 8C8 10 5.9 16.17 3.82 19.34c-.2.3.1.66.44.55C5.77 19.26 8.15 18.31 10 17"/><path d="M14 2s1 2 1 4-2 4-2 4"/></> },
+    { id:"neuro", label:"Team Practices", d:<><path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 1012 18"/><path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1112 18"/></> },
+  ];
+  const companyNav = [
+    { id:"company", label:"Company Settings", d:<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></> },
   ];
 
   return (
@@ -403,7 +421,7 @@ function LeadershipApp({ user, onLogout }) {
         <div className="nav-sep"/>
         <div className="nav-ctx">Leadership Portal</div>
         <div className="nav-r">
-          {user.company_code && <div className="nav-code">Code <strong>{user.company_code}</strong></div>}
+          {user.company_code && <div className="nav-code">Company Code <strong>{user.company_code}</strong></div>}
           <div className="nav-av">{user.name?.[0]?.toUpperCase()}</div>
           <div className="nav-nm">{user.name}</div>
           <button className="btn-nav" onClick={onLogout}>Sign out</button>
@@ -412,8 +430,22 @@ function LeadershipApp({ user, onLogout }) {
       <div className="layout">
         <div className="sb">
           <div className="sb-sec">Analytics</div>
-          {nav.map(item=>(
-            <div key={item.id} className={`sb-item ${page===item.id?"on":""}`} onClick={()=>setPage(item.id)}>
+          {analyticsNav.map(item=>(
+            <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
+              <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+              {item.label}
+            </div>
+          ))}
+          <div className="sb-sec">Wellness Tools</div>
+          {toolsNav.map(item=>(
+            <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
+              <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+              {item.label}
+            </div>
+          ))}
+          <div className="sb-sec">Workspace</div>
+          {companyNav.map(item=>(
+            <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
               <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
               {item.label}
             </div>
@@ -426,6 +458,9 @@ function LeadershipApp({ user, onLogout }) {
               {page==="departments" && <DeptsPage checkins={checkins}/>}
               {page==="trends" && <TrendsPage checkins={checkins}/>}
               {page==="reports" && <ReportsPage checkins={checkins} user={user}/>}
+              {page==="stress" && <ToolkitPage tools={STRESS_TOOLS} title="Stress Management" subtitle="Evidence-based techniques to share with your team"/>}
+              {page==="neuro" && <ToolkitPage tools={NEURO_TOOLS} title="Team Practices" subtitle="Neurological practices to implement in meetings and team settings"/>}
+              {page==="company" && <CompanyPage user={user}/>}
             </>
           )}
         </div>
@@ -433,6 +468,7 @@ function LeadershipApp({ user, onLogout }) {
     </div>
   );
 }
+
 
 const TT = { contentStyle:{borderRadius:6,border:"1px solid #E2D9CE",background:"#FDFCF9",fontSize:12} };
 
@@ -742,6 +778,77 @@ function ReportsPage({ checkins, user }) {
             </tbody>
           </table>
         )}
+      </div>
+    </div>
+  );
+}
+
+function CompanyPage({ user }) {
+  const [copied, setCopied] = useState(false);
+
+  function copyCode() {
+    navigator.clipboard.writeText(user.company_code || "");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div className="main">
+      <div className="ph">
+        <div className="crumb">WellPulse · Company Settings</div>
+        <div className="ph-title">Company Settings</div>
+        <div className="ph-sub">Manage your workspace and employee access</div>
+      </div>
+
+      <div className="card" style={{marginBottom:14}}>
+        <div className="ct">Your Company Access Code <div className="ct-line"/></div>
+        <p style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.7,marginBottom:20}}>
+          This is your unique company code. Share it with every employee when they register on WellPulse.
+          Their check-in data will automatically appear in your leadership dashboard once they sign up using this code.
+        </p>
+        <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:20}}>
+          <div style={{background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:"var(--rl)",padding:"20px 32px",textAlign:"center",minWidth:200}}>
+            <div style={{fontSize:11,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:8}}>Company Code</div>
+            <div style={{fontFamily:"'DM Serif Display',serif",fontSize:42,color:"var(--accent)",letterSpacing:6,lineHeight:1}}>{user.company_code || "N/A"}</div>
+          </div>
+          <div>
+            <button className="btn" style={{width:"auto",padding:"10px 24px",marginTop:0,marginBottom:10}} onClick={copyCode}>
+              {copied ? "Copied!" : "Copy Code"}
+            </button>
+            <p style={{fontSize:12,color:"var(--faint)",fontWeight:300,lineHeight:1.6,maxWidth:280}}>
+              Paste this code into an email, Slack message, or onboarding document for your employees.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="card" style={{marginBottom:14}}>
+        <div className="ct">How Employee Access Works <div className="ct-line"/></div>
+        <div style={{display:"flex",flexDirection:"column",gap:16}}>
+          {[
+            ["1","Share the code","Send your company code to all employees via email, Slack, or your onboarding process."],
+            ["2","Employees register","Each employee visits WellPulse, clicks Register, enters the company code along with their name, email, department, and password."],
+            ["3","They complete check-ins","Every week employees log in and complete the 5-question wellness check-in. It takes about 2 minutes."],
+            ["4","You see the data","Their responses feed directly into your leadership dashboard — grouped by department, tracked over time, and never individually identified."],
+          ].map(([n,t,s])=>(
+            <div key={n} style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:"var(--accent)",color:"#fff",fontSize:12,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{n}</div>
+              <div>
+                <div style={{fontWeight:600,fontSize:14,marginBottom:3}}>{t}</div>
+                <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.55}}>{s}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="ct">Employee Privacy <div className="ct-line"/></div>
+        <p style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.7}}>
+          WellPulse is designed to surface <strong>organizational health</strong> — not to surveil individuals.
+          Leadership sees aggregated department scores only. No individual employee is ever identified by name in the dashboard or reports.
+          Employees can complete their check-in knowing their response contributes to team-level data, not personal performance tracking.
+        </p>
       </div>
     </div>
   );
