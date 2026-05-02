@@ -376,6 +376,7 @@ function AccessGate({ user, children }) {
 function SuperAdminApp({ user, onLogout }) {
   const [page, setPage] = useState("companies");
   const [companies, setCompanies] = useState([]);
+  const [supportRequests, setSupportRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -384,7 +385,9 @@ function SuperAdminApp({ user, onLogout }) {
 
   async function loadData() {
     const { data } = await supabase.from("company_stats").select("*").order("created_at", { ascending: false });
+    const { data: reqs } = await supabase.from("support_requests").select("*").order("created_at", { ascending: false });
     setCompanies(data || []);
+    setSupportRequests(reqs || []);
     setLoading(false);
   }
 
@@ -396,6 +399,7 @@ function SuperAdminApp({ user, onLogout }) {
   const nav = [
     { id:"companies", label:"All Companies", d:<><path d="M3 21h18M6 21V7a1 1 0 011-1h10a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4"/></> },
     { id:"activity", label:"Platform Activity", d:<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></> },
+    { id:"support", label:"Support Requests", d:<><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></> },
   ];
 
   const totalCompanies = companies.length;
@@ -512,6 +516,85 @@ function SuperAdminApp({ user, onLogout }) {
                           </tbody>
                         </table>
                       </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {page==="support" && (
+                <div className="main">
+                  <div className="ph">
+                    <div className="crumb">WellPulse · Support Requests</div>
+                    <div className="ph-title">Support Requests</div>
+                    <div className="ph-sub">Anonymous requests from employees who need coaching support</div>
+                  </div>
+
+                  <div className="kgrid" style={{gridTemplateColumns:"repeat(3,1fr)"}}>
+                    <div className="kpi c1">
+                      <div className="kpi-lb">Total Requests</div>
+                      <div className="kpi-v">{supportRequests.length}</div>
+                      <div className="kpi-d">All time</div>
+                    </div>
+                    <div className="kpi c2">
+                      <div className="kpi-lb">Pending</div>
+                      <div className="kpi-v" style={{color:"#C4956A"}}>{supportRequests.filter(r=>r.status==="pending").length}</div>
+                      <div className="kpi-d">Need follow-up</div>
+                    </div>
+                    <div className="kpi c4">
+                      <div className="kpi-lb">Resolved</div>
+                      <div className="kpi-v" style={{color:"#5C7A5C"}}>{supportRequests.filter(r=>r.status==="resolved").length}</div>
+                      <div className="kpi-d">Completed</div>
+                    </div>
+                  </div>
+
+                  {supportRequests.length === 0 ? (
+                    <div className="card">
+                      <div className="empty">
+                        <div className="empty-t">No support requests yet</div>
+                        <div className="empty-s">When employees with low wellness scores request support, they will appear here anonymously. You can then follow up with their company's HR team to arrange confidential coaching.</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="card">
+                      <div className="ct">Anonymous Support Requests <div className="ct-line"/></div>
+                      <div style={{background:"var(--alight)",border:"1px solid var(--accent)",borderRadius:"var(--r)",padding:"10px 14px",marginBottom:16,fontSize:13,color:"var(--accent)",fontWeight:300,lineHeight:1.5}}>
+                        <strong>Privacy notice:</strong> All requests are anonymous. No employee names are stored. Follow up by contacting the company's HR administrator using their company code.
+                      </div>
+                      <table className="tbl">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Company Code</th>
+                            <th>Department</th>
+                            <th>Week</th>
+                            <th>Wellness Score</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {supportRequests.map(r=>(
+                            <tr key={r.id}>
+                              <td style={{fontSize:12,color:"var(--soft)"}}>{new Date(r.created_at).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</td>
+                              <td><span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:11,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>{r.company_code}</span></td>
+                              <td>{r.department||"—"}</td>
+                              <td style={{fontSize:12,color:"var(--soft)"}}>{r.week}</td>
+                              <td><span style={{fontWeight:700,color:getRiskColor(r.wellness_score||0)}}>{r.wellness_score}/10</span></td>
+                              <td>
+                                <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:r.status==="resolved"?"var(--alight)":"var(--wlight)",color:r.status==="resolved"?"var(--accent)":"var(--warn)"}}>
+                                  {r.status==="resolved"?"Resolved":"Pending"}
+                                </span>
+                              </td>
+                              <td>
+                                {r.status==="pending" && (
+                                  <button onClick={async()=>{ await supabase.from("support_requests").update({status:"resolved"}).eq("id",r.id); loadData(); }} style={{fontSize:11,padding:"3px 10px",background:"var(--alight)",color:"var(--accent)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>
+                                    Mark Resolved
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   )}
                 </div>
@@ -1177,6 +1260,8 @@ function CheckInPage({ user }) {
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [score, setScore] = useState(null);
+  const [supportRequested, setSupportRequested] = useState(false);
 
   useEffect(()=>{
     supabase.from("checkins").select("id").eq("user_id",user.id).eq("week",cw).maybeSingle()
@@ -1185,8 +1270,21 @@ function CheckInPage({ user }) {
 
   async function submit() {
     setSaving(true);
+    const score = Math.round((ans.stress + ans.workload + ans.relationships + ans.manager + ans.balance) / 5);
     await supabase.from("checkins").insert({ user_id:user.id, week:cw, department:user.department, company_code:user.company_code||"", ...ans });
+    setScore(score);
     setDone(true); setSaving(false);
+  }
+
+  async function requestSupport() {
+    await supabase.from("support_requests").insert({
+      company_code: user.company_code || "",
+      department: user.department,
+      week: cw,
+      wellness_score: score,
+      status: "pending"
+    });
+    setSupportRequested(true);
   }
 
   if (loading) return <div className="loading"><div className="spin"/></div>;
@@ -1201,7 +1299,26 @@ function CheckInPage({ user }) {
             <div className="ci-check"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <h2>Check-in complete</h2>
             <p>Your responses for {cw} have been recorded.<br/>Thank you for taking the time to reflect.</p>
-            <div className="ci-tip">Visit <strong>Stress Management</strong> or <strong>Team Practices</strong> in the sidebar for tools to support your wellbeing this week.</div>
+
+            {score !== null && score <= 4 && !supportRequested && (
+              <div style={{marginTop:24,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--rl)",padding:"20px 22px",textAlign:"left"}}>
+                <div style={{fontSize:13,fontWeight:600,color:"var(--ink)",marginBottom:6}}>It looks like this has been a difficult week.</div>
+                <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.65,marginBottom:16}}>You don't have to navigate this alone. If you'd like to be connected with a certified wellness coach — completely confidentially — we're here to help. Your name is never shared.</div>
+                <button onClick={requestSupport} style={{width:"100%",padding:"11px",background:"var(--accent)",color:"#fff",border:"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:8}}>Yes, I'd like support</button>
+                <button onClick={()=>setSupportRequested(true)} style={{width:"100%",padding:"11px",background:"transparent",color:"var(--faint)",border:"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,cursor:"pointer"}}>No thank you</button>
+              </div>
+            )}
+
+            {supportRequested && score !== null && score <= 4 && (
+              <div style={{marginTop:24,background:"var(--alight)",border:"1px solid var(--accent)",borderRadius:"var(--rl)",padding:"18px 22px",textAlign:"left"}}>
+                <div style={{fontSize:13,fontWeight:600,color:"var(--accent)",marginBottom:4}}>Your request has been received.</div>
+                <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.65}}>A wellness coach from Wild Bloom Wellness House will be in touch with your company's HR team to arrange confidential support. You remain completely anonymous.</div>
+              </div>
+            )}
+
+            {(score === null || score > 4) && (
+              <div className="ci-tip">Visit <strong>Stress Management</strong> or <strong>Team Practices</strong> in the sidebar for tools to support your wellbeing this week.</div>
+            )}
           </div>
         ) : (
           <>
