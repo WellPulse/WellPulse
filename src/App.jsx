@@ -313,17 +313,21 @@ export default function App() {
   return <AccessGate user={profile}><EmployeeApp user={profile} onLogout={() => supabase.auth.signOut()} /></AccessGate>;
 }
 
+const TierContext = React.createContext("insights");
+
 function AccessGate({ user, children }) {
   const [status, setStatus] = useState("loading");
   const [trialDays, setTrialDays] = useState(null);
   const [plan, setPlan] = useState(null);
+  const [tier, setTier] = useState("insights");
 
   useEffect(() => {
     async function checkAccess() {
       if (!user.company_code) { setStatus("active"); return; }
-      const { data } = await supabase.from("companies").select("status, plan, trial_ends_at").eq("code", user.company_code).maybeSingle();
+      const { data } = await supabase.from("companies").select("status, plan, tier, trial_ends_at").eq("code", user.company_code).maybeSingle();
       if (!data) { setStatus("active"); return; }
       setPlan(data.plan);
+      setTier(data.tier || "insights");
       if (data.status === "trial" && data.trial_ends_at) {
         const days = Math.ceil((new Date(data.trial_ends_at) - new Date()) / 86400000);
         if (days <= 0) { setStatus("expired"); return; }
@@ -361,7 +365,7 @@ function AccessGate({ user, children }) {
   );
 
   return (
-    <>
+    <TierContext.Provider value={tier}>
       {status === "trial" && trialDays !== null && (
         <div style={{background:"#FBF3EA",borderBottom:"1px solid #E8D5B7",padding:"8px 24px",fontSize:12,color:"#8B6F47",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -369,7 +373,7 @@ function AccessGate({ user, children }) {
         </div>
       )}
       {children}
-    </>
+    </TierContext.Provider>
   );
 }
 
@@ -396,10 +400,16 @@ function SuperAdminApp({ user, onLogout }) {
     loadData();
   }
 
+  async function updateTier(code, tier) {
+    await supabase.from("companies").update({ tier }).eq("code", code);
+    loadData();
+  }
+
   const nav = [
     { id:"companies", label:"All Companies", d:<><path d="M3 21h18M6 21V7a1 1 0 011-1h10a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4"/></> },
     { id:"activity", label:"Platform Activity", d:<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></> },
     { id:"support", label:"Support Requests", d:<><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></> },
+    { id:"pricing", label:"Pricing Tiers", d:<><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></> },
   ];
 
   const totalCompanies = companies.length;
@@ -481,6 +491,7 @@ function SuperAdminApp({ user, onLogout }) {
                               <th>Company Name</th>
                               <th>Code</th>
                               <th>Plan</th>
+                              <th>Tier</th>
                               <th>Status</th>
                               <th>Employees</th>
                               <th>Check-Ins</th>
@@ -498,16 +509,24 @@ function SuperAdminApp({ user, onLogout }) {
                                   <td style={{fontWeight:600}}>{c.name}</td>
                                   <td><span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:11,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>{c.code}</span></td>
                                   <td><span style={{fontSize:11,fontWeight:600,color:"var(--soft)",textTransform:"capitalize"}}>{c.plan||"trial"}</span></td>
+                                  <td>
+                                    <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:c.tier==="support"?"var(--ink)":"var(--surface2)",color:c.tier==="support"?"#fff":"var(--soft)"}}>
+                                      {c.tier==="support"?"Insights + Support":"Insights"}
+                                    </span>
+                                  </td>
                                   <td><span style={{fontSize:11,fontWeight:700,background:statusBg,color:statusColor,padding:"2px 9px",borderRadius:20,textTransform:"capitalize"}}>{c.status||"active"}</span></td>
                                   <td>{c.employee_count||0}</td>
                                   <td>{c.total_checkins||0}</td>
                                   <td>{score>0?<span style={{fontWeight:600,color:getRiskColor(score)}}>{score}/10</span>:<span style={{color:"var(--faint)",fontSize:11}}>—</span>}</td>
                                   <td>
-                                    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                                      {c.status!=="active" && <button onClick={()=>updateStatus(c.code,"active","paid")} style={{fontSize:11,padding:"3px 9px",background:"var(--alight)",color:"var(--accent)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Activate</button>}
-                                      {c.status!=="trial" && <button onClick={()=>updateStatus(c.code,"trial","trial")} style={{fontSize:11,padding:"3px 9px",background:"var(--wlight)",color:"var(--warn)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Trial</button>}
-                                      {c.status!=="paused" && <button onClick={()=>updateStatus(c.code,"paused",c.plan)} style={{fontSize:11,padding:"3px 9px",background:"var(--amlight)",color:"var(--amber)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Pause</button>}
-                                      {c.status!=="cancelled" && <button onClick={()=>{ if(window.confirm("Cancel "+c.name+"? They will lose all access.")) updateStatus(c.code,"cancelled",c.plan); }} style={{fontSize:11,padding:"3px 9px",background:"var(--dlight)",color:"var(--danger)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>}
+                                    <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                                      {c.status!=="active" && <button onClick={()=>updateStatus(c.code,"active","paid")} style={{fontSize:11,padding:"3px 8px",background:"var(--alight)",color:"var(--accent)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Activate</button>}
+                                      {c.status!=="trial" && <button onClick={()=>updateStatus(c.code,"trial","trial")} style={{fontSize:11,padding:"3px 8px",background:"var(--wlight)",color:"var(--warn)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Trial</button>}
+                                      {c.status!=="paused" && <button onClick={()=>updateStatus(c.code,"paused",c.plan)} style={{fontSize:11,padding:"3px 8px",background:"var(--amlight)",color:"var(--amber)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Pause</button>}
+                                      {c.status!=="cancelled" && <button onClick={()=>{ if(window.confirm("Cancel "+c.name+"? They will lose all access.")) updateStatus(c.code,"cancelled",c.plan); }} style={{fontSize:11,padding:"3px 8px",background:"var(--dlight)",color:"var(--danger)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>}
+                                      <div style={{width:"100%",height:4}}/>
+                                      {c.tier!=="support" && <button onClick={()=>updateTier(c.code,"support")} style={{fontSize:11,padding:"3px 8px",background:"var(--ink)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↑ Upgrade</button>}
+                                      {c.tier==="support" && <button onClick={()=>updateTier(c.code,"insights")} style={{fontSize:11,padding:"3px 8px",background:"var(--surface2)",color:"var(--soft)",border:"1px solid var(--border)",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↓ Downgrade</button>}
                                     </div>
                                   </td>
                                 </tr>
@@ -597,6 +616,68 @@ function SuperAdminApp({ user, onLogout }) {
                       </table>
                     </div>
                   )}
+                </div>
+              )}
+              {page==="pricing" && (
+                <div className="main">
+                  <div className="ph">
+                    <div className="crumb">WellPulse · Pricing Tiers</div>
+                    <div className="ph-title">Pricing Tiers</div>
+                    <div className="ph-sub">Two tiers — manage which companies have access to each</div>
+                  </div>
+                  <div className="g2" style={{marginBottom:16}}>
+                    <div className="card" style={{border:"2px solid var(--border)"}}>
+                      <div style={{marginBottom:16}}>
+                        <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:6}}>Tier 1</div>
+                        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:26,color:"var(--ink)",marginBottom:4}}>Insights</div>
+                        <div style={{fontSize:13,color:"var(--soft)",fontWeight:300}}>Analytics and wellness tracking platform</div>
+                      </div>
+                      <div style={{height:1,background:"var(--border)",marginBottom:16}}/>
+                      {["Weekly 5-question check-ins","Leadership dashboard","Department risk scores","Weekly and monthly trends","Burnout risk classification","Wellness toolkit access","Export reports","Company access code"].map(f=>(
+                        <div key={f} style={{display:"flex",gap:10,alignItems:"center",marginBottom:9}}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                          <span style={{fontSize:13,color:"var(--soft)",fontWeight:300}}>{f}</span>
+                        </div>
+                      ))}
+                      <div style={{marginTop:16,padding:"10px 14px",background:"var(--surface2)",borderRadius:"var(--r)",fontSize:12,color:"var(--faint)",fontWeight:300}}>Support requests not included in this tier.</div>
+                    </div>
+                    <div className="card" style={{border:"2px solid var(--ink)"}}>
+                      <div style={{marginBottom:16}}>
+                        <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:6}}>Tier 2</div>
+                        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:26,color:"var(--ink)",marginBottom:4}}>Insights + Support</div>
+                        <div style={{fontSize:13,color:"var(--soft)",fontWeight:300}}>Full platform with coaching connection</div>
+                      </div>
+                      <div style={{height:1,background:"var(--border)",marginBottom:16}}/>
+                      {["Everything in Insights","Employee support request button","Anonymous support tracking","Low score auto-prompt","Wild Bloom coaching connection","1-on-1 confidential coaching access","Manager coaching support","Team workshop facilitation"].map((f,i)=>(
+                        <div key={f} style={{display:"flex",gap:10,alignItems:"center",marginBottom:9}}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={i<4?"#5C7A5C":"#8B6F47"} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                          <span style={{fontSize:13,color:i<4?"var(--soft)":"var(--ink)",fontWeight:i<4?300:500}}>{f}</span>
+                        </div>
+                      ))}
+                      <div style={{marginTop:16,padding:"10px 14px",background:"var(--alight)",borderRadius:"var(--r)",fontSize:12,color:"var(--accent)",fontWeight:400}}>Includes Wild Bloom Wellness House coaching services.</div>
+                    </div>
+                  </div>
+                  <div className="card">
+                    <div className="ct">Current Company Tiers <div className="ct-line"/></div>
+                    <table className="tbl">
+                      <thead><tr><th>Company</th><th>Code</th><th>Current Tier</th><th>Change Tier</th></tr></thead>
+                      <tbody>
+                        {companies.map(c=>(
+                          <tr key={c.id}>
+                            <td style={{fontWeight:500}}>{c.name}</td>
+                            <td><span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:11,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>{c.code}</span></td>
+                            <td><span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:c.tier==="support"?"var(--ink)":"var(--surface2)",color:c.tier==="support"?"#fff":"var(--soft)"}}>{c.tier==="support"?"Insights + Support":"Insights"}</span></td>
+                            <td>
+                              <div style={{display:"flex",gap:8}}>
+                                {c.tier!=="support" && <button onClick={()=>updateTier(c.code,"support")} style={{fontSize:12,padding:"5px 14px",background:"var(--ink)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↑ Upgrade to Support</button>}
+                                {c.tier==="support" && <button onClick={()=>updateTier(c.code,"insights")} style={{fontSize:12,padding:"5px 14px",background:"var(--surface2)",color:"var(--soft)",border:"1px solid var(--border)",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↓ Downgrade to Insights</button>}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
               {page==="activity" && (
@@ -1214,11 +1295,13 @@ function CompanyPage({ user }) {
 
 function EmployeeApp({ user, onLogout }) {
   const [page, setPage] = useState("checkin");
+  const tier = React.useContext(TierContext);
   const nav = [
     { id:"checkin", label:"Weekly Check-In", d:<><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></> },
     { id:"stress", label:"Stress Management", d:<><path d="M17 8C8 10 5.9 16.17 3.82 19.34c-.2.3.1.66.44.55C5.77 19.26 8.15 18.31 10 17"/><path d="M14 2s1 2 1 4-2 4-2 4"/></> },
     { id:"neuro", label:"Team Practices", d:<><path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 1012 18"/><path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1112 18"/></> },
     { id:"history", label:"My History", d:<><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 106 5.3L3 8"/><path d="M12 7v5l4 2"/></> },
+    ...(tier === "support" ? [{ id:"getsupport", label:"Get Support", d:<><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></> }] : []),
   ];
   return (
     <div className="app">
@@ -1247,6 +1330,7 @@ function EmployeeApp({ user, onLogout }) {
           {page==="stress" && <ToolkitPage tools={STRESS_TOOLS} title="Stress Management" subtitle="Evidence-based techniques to regulate your nervous system"/>}
           {page==="neuro" && <ToolkitPage tools={NEURO_TOOLS} title="Team Practices" subtitle="Neurological practices to implement in meetings and team settings"/>}
           {page==="history" && <HistoryPage user={user}/>}
+          {page==="getsupport" && <SupportPage user={user}/>}
         </div>
       </div>
     </div>
@@ -1418,6 +1502,86 @@ function ToolkitPage({ tools, title, subtitle }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function SupportPage({ user }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [note, setNote] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function requestSupport() {
+    setSubmitting(true);
+    await supabase.from("support_requests").insert({
+      company_code: user.company_code || "",
+      department: user.department,
+      week: getWeekLabel(),
+      wellness_score: null,
+      status: "pending",
+      notes: note || null
+    });
+    setSubmitted(true);
+    setSubmitting(false);
+  }
+
+  return (
+    <div className="ci-wrap" style={{maxWidth:600}}>
+      <div className="ci-card">
+        {submitted ? (
+          <div className="ci-done">
+            <div className="ci-check">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h2>Request received</h2>
+            <p style={{marginBottom:20}}>A certified wellness coach from Wild Bloom Wellness House will follow up through your company's HR team to arrange confidential support.<br/><br/>You remain completely anonymous throughout this process.</p>
+            <div style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--rl)",padding:"16px 18px",textAlign:"left"}}>
+              <div style={{fontSize:11,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".07em",marginBottom:4}}>Need immediate support?</div>
+              <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.6}}>You can also reach Wild Bloom Wellness House directly at <strong style={{color:"var(--ink)"}}>Miranda@wildbloomwellnesshouse.com</strong></div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="ci-wk">Confidential Support</div>
+            <div className="ci-title">Request Wellness Support</div>
+            <div className="ci-sub" style={{marginBottom:28}}>Sometimes work feels overwhelming. You don't have to navigate it alone.</div>
+
+            <div style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--rl)",padding:"18px 20px",marginBottom:24}}>
+              <div style={{fontSize:13,fontWeight:500,color:"var(--ink)",marginBottom:8}}>How this works</div>
+              {[
+                "Your request is completely anonymous — your name is never shared",
+                "A certified coach from Wild Bloom Wellness House will be notified",
+                "They will work with your HR team to arrange confidential 1-on-1 support",
+                "You control whether and how much you share in any coaching session"
+              ].map((s,i)=>(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:8}}>
+                  <div style={{width:18,height:18,borderRadius:"50%",background:"var(--accent)",color:"#fff",fontSize:10,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>{i+1}</div>
+                  <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.5}}>{s}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{marginBottom:20}}>
+              <label style={{display:"block",fontSize:11,fontWeight:600,color:"var(--soft)",marginBottom:6,textTransform:"uppercase",letterSpacing:".05em"}}>Optional — share a little context (anonymous)</label>
+              <textarea
+                value={note}
+                onChange={e=>setNote(e.target.value)}
+                placeholder="e.g. I have been feeling overwhelmed with workload lately and would like some strategies to help manage stress..."
+                style={{width:"100%",padding:"10px 12px",border:"1.5px solid var(--border)",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,color:"var(--ink)",background:"var(--surface2)",outline:"none",resize:"vertical",minHeight:90,lineHeight:1.6}}
+              />
+              <div style={{fontSize:11,color:"var(--faint)",marginTop:4,fontWeight:300}}>This note is optional and remains anonymous. It helps the coach prepare to support you.</div>
+            </div>
+
+            <button className="btn" onClick={requestSupport} disabled={submitting} style={{marginTop:0}}>
+              {submitting ? "Submitting..." : "Request Confidential Support"}
+            </button>
+
+            <div style={{marginTop:16,textAlign:"center",fontSize:12,color:"var(--faint)",fontWeight:300}}>
+              Or contact Wild Bloom directly at <strong style={{color:"var(--soft)"}}>Miranda@wildbloomwellnesshouse.com</strong>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
