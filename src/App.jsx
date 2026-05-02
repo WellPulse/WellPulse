@@ -309,8 +309,68 @@ export default function App() {
   if (!session) return <AuthScreen />;
   if (!profile) return <div className="loading"><div className="spin"/><div className="spin-lb">Setting up your workspace</div></div>;
   if (profile.is_super_admin) return <SuperAdminApp user={profile} onLogout={() => supabase.auth.signOut()} />;
-  if (profile.role === "leadership") return <LeadershipApp user={profile} onLogout={() => supabase.auth.signOut()} />;
-  return <EmployeeApp user={profile} onLogout={() => supabase.auth.signOut()} />;
+  if (profile.role === "leadership") return <AccessGate user={profile}><LeadershipApp user={profile} onLogout={() => supabase.auth.signOut()} /></AccessGate>;
+  return <AccessGate user={profile}><EmployeeApp user={profile} onLogout={() => supabase.auth.signOut()} /></AccessGate>;
+}
+
+function AccessGate({ user, children }) {
+  const [status, setStatus] = useState("loading");
+  const [trialDays, setTrialDays] = useState(null);
+  const [plan, setPlan] = useState(null);
+
+  useEffect(() => {
+    async function checkAccess() {
+      if (!user.company_code) { setStatus("active"); return; }
+      const { data } = await supabase.from("companies").select("status, plan, trial_ends_at").eq("code", user.company_code).maybeSingle();
+      if (!data) { setStatus("active"); return; }
+      setPlan(data.plan);
+      if (data.status === "trial" && data.trial_ends_at) {
+        const days = Math.ceil((new Date(data.trial_ends_at) - new Date()) / 86400000);
+        if (days <= 0) { setStatus("expired"); return; }
+        setTrialDays(days);
+      }
+      setStatus(data.status || "active");
+    }
+    checkAccess();
+  }, []);
+
+  if (status === "loading") return <div className="loading"><div className="spin"/><div className="spin-lb">Verifying access</div></div>;
+
+  if (status === "paused") return (
+    <div className="loading" style={{flexDirection:"column",gap:16,textAlign:"center",padding:40}}>
+      <div style={{width:56,height:56,borderRadius:"50%",background:"var(--wlight)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto"}}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4956A" strokeWidth="2" strokeLinecap="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </div>
+      <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)"}}>Account Paused</div>
+      <div style={{fontSize:14,color:"var(--soft)",maxWidth:380,lineHeight:1.7,fontWeight:300}}>Your WellPulse account has been temporarily paused. Please contact your administrator or reach out to <strong>Miranda@wildbloomwellnesshouse.com</strong> to restore access.</div>
+      <button style={{marginTop:8,padding:"10px 24px",background:"transparent",border:"1.5px solid var(--border)",borderRadius:6,fontFamily:"'DM Sans',sans-serif",fontSize:13,cursor:"pointer",color:"var(--soft)"}} onClick={() => supabase.auth.signOut()}>Sign Out</button>
+      <div style={{marginTop:40,fontSize:11,color:"var(--faint)"}}>Powered by Wild Bloom Wellness House</div>
+    </div>
+  );
+
+  if (status === "cancelled" || status === "expired") return (
+    <div className="loading" style={{flexDirection:"column",gap:16,textAlign:"center",padding:40}}>
+      <div style={{width:56,height:56,borderRadius:"50%",background:"var(--dlight)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto"}}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0522D" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)"}}>{status === "expired" ? "Trial Expired" : "Subscription Ended"}</div>
+      <div style={{fontSize:14,color:"var(--soft)",maxWidth:380,lineHeight:1.7,fontWeight:300}}>{status === "expired" ? "Your free trial has ended." : "Your WellPulse subscription is no longer active."} To continue supporting your team's wellness, please contact <strong>Miranda@wildbloomwellnesshouse.com</strong> to renew.</div>
+      <button style={{marginTop:8,padding:"10px 24px",background:"transparent",border:"1.5px solid var(--border)",borderRadius:6,fontFamily:"'DM Sans',sans-serif",fontSize:13,cursor:"pointer",color:"var(--soft)"}} onClick={() => supabase.auth.signOut()}>Sign Out</button>
+      <div style={{marginTop:40,fontSize:11,color:"var(--faint)"}}>Powered by Wild Bloom Wellness House</div>
+    </div>
+  );
+
+  return (
+    <>
+      {status === "trial" && trialDays !== null && (
+        <div style={{background:"#FBF3EA",borderBottom:"1px solid #E8D5B7",padding:"8px 24px",fontSize:12,color:"#8B6F47",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Free trial — <strong>{trialDays} day{trialDays !== 1 ? "s" : ""} remaining</strong>. Contact Miranda@wildbloomwellnesshouse.com to subscribe.</span>
+        </div>
+      )}
+      {children}
+    </>
+  );
 }
 
 function SuperAdminApp({ user, onLogout }) {
@@ -326,6 +386,11 @@ function SuperAdminApp({ user, onLogout }) {
     const { data } = await supabase.from("company_stats").select("*").order("created_at", { ascending: false });
     setCompanies(data || []);
     setLoading(false);
+  }
+
+  async function updateStatus(code, status, plan) {
+    await supabase.from("companies").update({ status, plan }).eq("code", code);
+    loadData();
   }
 
   const nav = [
@@ -410,43 +475,36 @@ function SuperAdminApp({ user, onLogout }) {
                           <thead>
                             <tr>
                               <th>Company Name</th>
-                              <th>Access Code</th>
+                              <th>Code</th>
+                              <th>Plan</th>
+                              <th>Status</th>
                               <th>Employees</th>
-                              <th>Total Check-Ins</th>
-                              <th>Avg Wellness</th>
-                              <th>Risk Level</th>
-                              <th>Registered</th>
+                              <th>Check-Ins</th>
+                              <th>Wellness</th>
+                              <th>Actions</th>
                             </tr>
                           </thead>
                           <tbody>
                             {companies.map(c => {
                               const score = parseFloat(c.avg_wellness_score) || 0;
+                              const statusColor = c.status==="active"?"#5C7A5C":c.status==="trial"?"#C4956A":c.status==="paused"?"#8B6F47":"#A0522D";
+                              const statusBg = c.status==="active"?"var(--alight)":c.status==="trial"?"var(--wlight)":c.status==="paused"?"var(--amlight)":"var(--dlight)";
                               return (
                                 <tr key={c.id}>
                                   <td style={{fontWeight:600}}>{c.name}</td>
+                                  <td><span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:11,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>{c.code}</span></td>
+                                  <td><span style={{fontSize:11,fontWeight:600,color:"var(--soft)",textTransform:"capitalize"}}>{c.plan||"trial"}</span></td>
+                                  <td><span style={{fontSize:11,fontWeight:700,background:statusBg,color:statusColor,padding:"2px 9px",borderRadius:20,textTransform:"capitalize"}}>{c.status||"active"}</span></td>
+                                  <td>{c.employee_count||0}</td>
+                                  <td>{c.total_checkins||0}</td>
+                                  <td>{score>0?<span style={{fontWeight:600,color:getRiskColor(score)}}>{score}/10</span>:<span style={{color:"var(--faint)",fontSize:11}}>—</span>}</td>
                                   <td>
-                                    <span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:12,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>
-                                      {c.code}
-                                    </span>
-                                  </td>
-                                  <td>{c.employee_count || 0}</td>
-                                  <td>{c.total_checkins || 0}</td>
-                                  <td>
-                                    {score > 0 ? (
-                                      <div className="sbar-row">
-                                        <div className="sbar"><div className="sbar-f" style={{width:`${score*10}%`,background:getRiskColor(score)}}/></div>
-                                        <span className="sbar-v" style={{color:getRiskColor(score)}}>{score}</span>
-                                      </div>
-                                    ) : <span style={{color:"var(--faint)",fontSize:12}}>No data</span>}
-                                  </td>
-                                  <td>
-                                    {score > 0
-                                      ? <span className={"badge "+getRisk(score)}><span className="badge-dot"/>{getRiskLabel(score)}</span>
-                                      : <span style={{color:"var(--faint)",fontSize:12}}>Awaiting data</span>
-                                    }
-                                  </td>
-                                  <td style={{fontSize:12,color:"var(--soft)"}}>
-                                    {c.created_at ? new Date(c.created_at).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "—"}
+                                    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                                      {c.status!=="active" && <button onClick={()=>updateStatus(c.code,"active","paid")} style={{fontSize:11,padding:"3px 9px",background:"var(--alight)",color:"var(--accent)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Activate</button>}
+                                      {c.status!=="trial" && <button onClick={()=>updateStatus(c.code,"trial","trial")} style={{fontSize:11,padding:"3px 9px",background:"var(--wlight)",color:"var(--warn)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Trial</button>}
+                                      {c.status!=="paused" && <button onClick={()=>updateStatus(c.code,"paused",c.plan)} style={{fontSize:11,padding:"3px 9px",background:"var(--amlight)",color:"var(--amber)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Pause</button>}
+                                      {c.status!=="cancelled" && <button onClick={()=>{ if(window.confirm("Cancel "+c.name+"? They will lose all access.")) updateStatus(c.code,"cancelled",c.plan); }} style={{fontSize:11,padding:"3px 9px",background:"var(--dlight)",color:"var(--danger)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>}
+                                    </div>
                                   </td>
                                 </tr>
                               );
@@ -639,7 +697,8 @@ function LeadershipApp({ user, onLogout }) {
         </div>
       </nav>
       <div className="layout">
-        <div className="sb">
+        <div className="sb" style={{display:"flex",flexDirection:"column"}}>
+          <div style={{flex:1}}>
           <div className="sb-sec">Analytics</div>
           {analyticsNav.map(item=>(
             <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
@@ -661,6 +720,11 @@ function LeadershipApp({ user, onLogout }) {
               {item.label}
             </div>
           ))}
+          </div>
+          <div style={{padding:"16px 18px",borderTop:"1px solid var(--border)"}}>
+            <div style={{fontSize:10,color:"var(--faint)",fontWeight:300,lineHeight:1.5}}>Powered by</div>
+            <div style={{fontSize:11,color:"var(--soft)",fontWeight:500,marginTop:1}}>Wild Bloom Wellness House</div>
+          </div>
         </div>
         <div className="content">
           {loading ? <div className="loading"><div className="spin"/></div> : (
