@@ -308,8 +308,207 @@ export default function App() {
   if (loading) return <div className="loading"><div className="spin"/><div className="spin-lb">Loading WellPulse</div></div>;
   if (!session) return <AuthScreen />;
   if (!profile) return <div className="loading"><div className="spin"/><div className="spin-lb">Setting up your workspace</div></div>;
+  if (profile.is_super_admin) return <SuperAdminApp user={profile} onLogout={() => supabase.auth.signOut()} />;
   if (profile.role === "leadership") return <LeadershipApp user={profile} onLogout={() => supabase.auth.signOut()} />;
   return <EmployeeApp user={profile} onLogout={() => supabase.auth.signOut()} />;
+}
+
+function SuperAdminApp({ user, onLogout }) {
+  const [page, setPage] = useState("companies");
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    const { data } = await supabase.from("company_stats").select("*").order("created_at", { ascending: false });
+    setCompanies(data || []);
+    setLoading(false);
+  }
+
+  const nav = [
+    { id:"companies", label:"All Companies", d:<><path d="M3 21h18M6 21V7a1 1 0 011-1h10a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4"/></> },
+    { id:"activity", label:"Platform Activity", d:<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></> },
+  ];
+
+  const totalCompanies = companies.length;
+  const totalEmployees = companies.reduce((a,b) => a + (b.employee_count||0), 0);
+  const totalCheckins = companies.reduce((a,b) => a + (b.total_checkins||0), 0);
+  const avgWellness = companies.length ? (companies.reduce((a,b) => a + (parseFloat(b.avg_wellness_score)||0), 0) / companies.length).toFixed(1) : 0;
+
+  return (
+    <div className="app">
+      <nav className="nav">
+        <div className="nav-logo">WellPulse</div>
+        <div className="nav-sep"/>
+        <div className="nav-ctx">Owner Dashboard</div>
+        <div style={{marginLeft:8,background:"#5C7A5C",color:"#fff",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:20,letterSpacing:".06em",textTransform:"uppercase"}}>Super Admin</div>
+        <div className="nav-r">
+          <div className="nav-av">{user.name?.[0]?.toUpperCase()}</div>
+          <div className="nav-nm">{user.name}</div>
+          <button className="btn-nav" onClick={onLogout}>Sign out</button>
+        </div>
+      </nav>
+      <div className="layout">
+        <div className="sb">
+          <div className="sb-sec">Owner</div>
+          {nav.map(item=>(
+            <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
+              <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+              {item.label}
+            </div>
+          ))}
+        </div>
+        <div className="content">
+          {loading ? <div className="loading"><div className="spin"/></div> : (
+            <>
+              {page==="companies" && (
+                <div className="main">
+                  <div className="ph">
+                    <div className="crumb">WellPulse · Owner Dashboard</div>
+                    <div className="ph-title">All Companies</div>
+                    <div className="ph-sub">Every company currently using the WellPulse platform</div>
+                  </div>
+
+                  <div className="kgrid">
+                    <div className="kpi c1">
+                      <div className="kpi-lb">Companies</div>
+                      <div className="kpi-v">{totalCompanies}</div>
+                      <div className="kpi-d">Active on platform</div>
+                    </div>
+                    <div className="kpi c3">
+                      <div className="kpi-lb">Total Employees</div>
+                      <div className="kpi-v">{totalEmployees}</div>
+                      <div className="kpi-d">Registered users</div>
+                    </div>
+                    <div className="kpi c4">
+                      <div className="kpi-lb">Total Check-Ins</div>
+                      <div className="kpi-v">{totalCheckins}</div>
+                      <div className="kpi-d">Across all companies</div>
+                    </div>
+                    <div className="kpi c1">
+                      <div className="kpi-lb">Avg Wellness Score</div>
+                      <div className="kpi-v" style={{color:getRiskColor(parseFloat(avgWellness))}}>{avgWellness}<small>/10</small></div>
+                      <div className="kpi-d">Platform-wide</div>
+                    </div>
+                  </div>
+
+                  {companies.length === 0 ? (
+                    <div className="card">
+                      <div className="empty">
+                        <div className="empty-t">No companies yet</div>
+                        <div className="empty-s">Companies will appear here once they register and create their workspace on WellPulse.</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="card">
+                      <div className="ct">Company Overview <div className="ct-line"/></div>
+                      <div className="tw">
+                        <table className="tbl">
+                          <thead>
+                            <tr>
+                              <th>Company Name</th>
+                              <th>Access Code</th>
+                              <th>Employees</th>
+                              <th>Total Check-Ins</th>
+                              <th>Avg Wellness</th>
+                              <th>Risk Level</th>
+                              <th>Registered</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {companies.map(c => {
+                              const score = parseFloat(c.avg_wellness_score) || 0;
+                              return (
+                                <tr key={c.id}>
+                                  <td style={{fontWeight:600}}>{c.name}</td>
+                                  <td>
+                                    <span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:12,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>
+                                      {c.code}
+                                    </span>
+                                  </td>
+                                  <td>{c.employee_count || 0}</td>
+                                  <td>{c.total_checkins || 0}</td>
+                                  <td>
+                                    {score > 0 ? (
+                                      <div className="sbar-row">
+                                        <div className="sbar"><div className="sbar-f" style={{width:`${score*10}%`,background:getRiskColor(score)}}/></div>
+                                        <span className="sbar-v" style={{color:getRiskColor(score)}}>{score}</span>
+                                      </div>
+                                    ) : <span style={{color:"var(--faint)",fontSize:12}}>No data</span>}
+                                  </td>
+                                  <td>
+                                    {score > 0
+                                      ? <span className={"badge "+getRisk(score)}><span className="badge-dot"/>{getRiskLabel(score)}</span>
+                                      : <span style={{color:"var(--faint)",fontSize:12}}>Awaiting data</span>
+                                    }
+                                  </td>
+                                  <td style={{fontSize:12,color:"var(--soft)"}}>
+                                    {c.created_at ? new Date(c.created_at).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "—"}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {page==="activity" && (
+                <div className="main">
+                  <div className="ph">
+                    <div className="crumb">WellPulse · Platform Activity</div>
+                    <div className="ph-title">Platform Activity</div>
+                    <div className="ph-sub">Usage and engagement across all companies</div>
+                  </div>
+                  <div className="card">
+                    <div className="ct">Company Wellness Comparison <div className="ct-line"/></div>
+                    {companies.length === 0 ? (
+                      <div className="empty"><div className="empty-t">No data yet</div></div>
+                    ) : (
+                      <ResponsiveContainer width="100%" height={280}>
+                        <BarChart data={companies.map(c=>({ name:c.name, Score:parseFloat(c.avg_wellness_score)||0, Employees:c.employee_count||0, CheckIns:c.total_checkins||0 }))} margin={{top:5,right:16,left:0,bottom:5}}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#E2D9CE" vertical={false}/>
+                          <XAxis dataKey="name" tick={{fontSize:11,fill:"#6B5D4F"}}/>
+                          <YAxis tick={{fontSize:11,fill:"#6B5D4F"}}/>
+                          <Tooltip contentStyle={{borderRadius:6,border:"1px solid #E2D9CE",background:"#FDFCF9",fontSize:12}}/>
+                          <Legend iconType="circle" iconSize={7} formatter={v=><span style={{fontSize:11,color:"#6B5D4F"}}>{v}</span>}/>
+                          <Bar dataKey="Score" fill="#5C7A5C" radius={[3,3,0,0]} name="Wellness Score"/>
+                          <Bar dataKey="Employees" fill="#8B6F47" radius={[3,3,0,0]} name="Employees"/>
+                          <Bar dataKey="CheckIns" fill="#7A8C6E" radius={[3,3,0,0]} name="Check-Ins"/>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    )}
+                  </div>
+                  <div className="card" style={{marginTop:14}}>
+                    <div className="ct">Platform Summary <div className="ct-line"/></div>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,padding:"8px 0"}}>
+                      {[
+                        ["Total Companies", totalCompanies, "Organizations using WellPulse"],
+                        ["Total Employees", totalEmployees, "Registered across all companies"],
+                        ["Total Check-Ins", totalCheckins, "Wellness surveys completed"],
+                        ["Platform Avg Score", avgWellness+"/10", "Overall wellness across platform"],
+                      ].map(([label,val,desc])=>(
+                        <div key={label} style={{padding:"16px 0",borderBottom:"1px solid var(--border)"}}>
+                          <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".07em",marginBottom:6}}>{label}</div>
+                          <div style={{fontFamily:"'DM Serif Display',serif",fontSize:28,color:"var(--ink)",marginBottom:3}}>{val}</div>
+                          <div style={{fontSize:12,color:"var(--faint)",fontWeight:300}}>{desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function AuthScreen() {
