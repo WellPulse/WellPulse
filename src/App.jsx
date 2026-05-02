@@ -630,16 +630,33 @@ function SuperAdminApp({ user, onLogout }) {
                       <div style={{marginBottom:16}}>
                         <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:6}}>Tier 1</div>
                         <div style={{fontFamily:"'DM Serif Display',serif",fontSize:26,color:"var(--ink)",marginBottom:4}}>Insights</div>
-                        <div style={{fontSize:13,color:"var(--soft)",fontWeight:300}}>Analytics and wellness tracking platform</div>
+                        <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,marginBottom:3}}>Analytics, wellness tracking, and group coaching</div>
+                        <div style={{fontSize:11,color:"var(--faint)",fontWeight:300}}>Powered by Wild Bloom Wellness House</div>
                       </div>
-                      <div style={{height:1,background:"var(--border)",marginBottom:16}}/>
-                      {["Weekly 5-question check-ins","Leadership dashboard","Department risk scores","Weekly and monthly trends","Burnout risk classification","Wellness toolkit access","Export reports","Company access code"].map(f=>(
-                        <div key={f} style={{display:"flex",gap:10,alignItems:"center",marginBottom:9}}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      <div style={{height:1,background:"var(--border)",marginBottom:14}}/>
+                      <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Platform</div>
+                      {["Weekly 5-question check-ins","Leadership dashboard","Department risk scores","Weekly and monthly trends","Burnout risk classification","Wellness toolkit for employees","Export reports","Company access code"].map(f=>(
+                        <div key={f} style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                           <span style={{fontSize:13,color:"var(--soft)",fontWeight:300}}>{f}</span>
                         </div>
                       ))}
-                      <div style={{marginTop:16,padding:"10px 14px",background:"var(--surface2)",borderRadius:"var(--r)",fontSize:12,color:"var(--faint)",fontWeight:300}}>Support requests not included in this tier.</div>
+                      <div style={{height:1,background:"var(--border)",margin:"12px 0"}}/>
+                      <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Coaching Services Included</div>
+                      {["Wild Bloom coaching connection","Manager coaching support","Team workshop facilitation","Nervous system training for teams"].map(f=>(
+                        <div key={f} style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B6F47" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                          <span style={{fontSize:13,color:"var(--ink)",fontWeight:500}}>{f}</span>
+                        </div>
+                      ))}
+                      <div style={{height:1,background:"var(--border)",margin:"12px 0"}}/>
+                      <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Not Included</div>
+                      {["1-on-1 confidential employee coaching","Anonymous employee support requests"].map(f=>(
+                        <div key={f} style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C8BAA8" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                          <span style={{fontSize:13,color:"var(--faint)",fontWeight:300}}>{f}</span>
+                        </div>
+                      ))}
                     </div>
                     <div className="card" style={{border:"2px solid var(--ink)"}}>
                       <div style={{marginBottom:16}}>
