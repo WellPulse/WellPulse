@@ -623,82 +623,99 @@ function SuperAdminApp({ user, onLogout }) {
                   <div className="ph">
                     <div className="crumb">WellPulse · Pricing Tiers</div>
                     <div className="ph-title">Pricing Tiers</div>
-                    <div className="ph-sub">Two tiers — manage which companies have access to each</div>
+                    <div className="ph-sub">Three tiers + add-ons — manage company access and communicate your value</div>
                   </div>
-                  <div className="g2" style={{marginBottom:16}}>
+                  {/* THREE TIER CARDS */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:16}}>
+
+                    {/* TIER 1 */}
                     <div className="card" style={{border:"1.5px solid var(--border)"}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
-                        <div>
-                          <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:5}}>Tier 1</div>
-                          <div style={{fontFamily:"'DM Serif Display',serif",fontSize:28,color:"var(--ink)",marginBottom:3}}>Insights</div>
-                          <div style={{fontSize:12,color:"var(--soft)",fontWeight:300}}>Analytics + Group Coaching</div>
-                        </div>
-                        <div style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:6,padding:"4px 10px",fontSize:10,fontWeight:700,color:"var(--soft)",textTransform:"uppercase",letterSpacing:".06em"}}>Standard</div>
+                      <div style={{marginBottom:4}}>
+                        <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:6}}>Tier 1</div>
+                        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)",marginBottom:2}}>Insight</div>
+                        <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginBottom:6}}>$6 – $12 / employee / month</div>
+                        <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,marginBottom:14,fontStyle:"italic"}}>Understand Burnout Before It Shows Up</div>
                       </div>
+                      <div style={{background:"var(--surface2)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies who want visibility into workforce risk</div>
                       <div style={{height:1,background:"var(--border)",marginBottom:14}}/>
-                      <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Platform Analytics</div>
-                      {["Weekly 5-question wellness check-ins","Real-time leadership dashboard","Department burnout risk scores","Weekly and monthly trend reports","Risk classification — Low, Medium, High","Wellness toolkit for all employees","Downloadable export reports","Unique company access code"].map(f=>(
+                      {["Real-time burnout risk analytics","Anonymous employee check-ins","Team and department dashboards","Monthly executive summary reports","Trend tracking — energy, stress, engagement"].map(f=>(
                         <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:8}}>
                           <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.4}}>{f}</span>
+                          <span style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.4}}>{f}</span>
                         </div>
                       ))}
-                      <div style={{height:1,background:"var(--border)",margin:"14px 0"}}/>
-                      <div style={{fontSize:10,fontWeight:700,color:"var(--amber)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Wild Bloom Coaching Included</div>
-                      {["Wild Bloom Wellness House coaching connection","Manager coaching and leadership support","Team workshop facilitation","Nervous system regulation training for teams","Stress management practices for meetings"].map(f=>(
-                        <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:8}}>
-                          <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B6F47" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span style={{fontSize:13,color:"var(--ink)",fontWeight:400,lineHeight:1.4}}>{f}</span>
-                        </div>
-                      ))}
-                      <div style={{height:1,background:"var(--border)",margin:"14px 0"}}/>
-                      <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Not Available</div>
-                      {["1-on-1 confidential employee coaching","Anonymous employee support requests","Low wellness score auto-prompt"].map(f=>(
-                        <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:7}}>
-                          <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8BAA8" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                          <span style={{fontSize:12,color:"var(--faint)",fontWeight:300,lineHeight:1.4}}>{f}</span>
-                        </div>
-                      ))}
+                      <div style={{marginTop:14,padding:"10px 12px",background:"var(--surface2)",borderRadius:"var(--r)",fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,fontStyle:"italic"}}>
+                        Know what's happening inside your workforce — before it impacts performance.
+                      </div>
                     </div>
-                    <div className="card" style={{border:"2px solid var(--ink)",position:"relative"}}>
-                      <div style={{position:"absolute",top:-1,right:20,background:"var(--ink)",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 12px",borderRadius:"0 0 6px 6px",letterSpacing:".06em",textTransform:"uppercase"}}>Recommended</div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
-                        <div>
-                          <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:5}}>Tier 2</div>
-                          <div style={{fontFamily:"'DM Serif Display',serif",fontSize:28,color:"var(--ink)",marginBottom:3}}>Insights + Support</div>
-                          <div style={{fontSize:12,color:"var(--soft)",fontWeight:300}}>Analytics + Full Coaching Access</div>
-                        </div>
-                        <div style={{background:"var(--alight)",border:"1px solid var(--accent)",borderRadius:6,padding:"4px 10px",fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".06em"}}>Premium</div>
+
+                    {/* TIER 2 */}
+                    <div className="card" style={{border:"2px solid var(--amber)",position:"relative"}}>
+                      <div style={{position:"absolute",top:-1,right:16,background:"var(--amber)",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:"0 0 6px 6px",letterSpacing:".06em",textTransform:"uppercase"}}>Popular</div>
+                      <div style={{marginBottom:4}}>
+                        <div style={{fontSize:10,fontWeight:700,color:"var(--amber)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:6}}>Tier 2</div>
+                        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)",marginBottom:2}}>Optimize</div>
+                        <div style={{fontSize:12,color:"var(--amber)",fontWeight:600,marginBottom:6}}>$15 – $25 / employee / month</div>
+                        <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,marginBottom:14,fontStyle:"italic"}}>Turn Insight Into Performance</div>
                       </div>
+                      <div style={{background:"var(--wlight)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies ready to improve output and team stability</div>
                       <div style={{height:1,background:"var(--border)",marginBottom:14}}/>
-                      <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Platform Analytics</div>
-                      {["Weekly 5-question wellness check-ins","Real-time leadership dashboard","Department burnout risk scores","Weekly and monthly trend reports","Risk classification — Low, Medium, High","Wellness toolkit for all employees","Downloadable export reports","Unique company access code"].map(f=>(
-                        <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:8}}>
-                          <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.4}}>{f}</span>
-                        </div>
-                      ))}
-                      <div style={{height:1,background:"var(--border)",margin:"14px 0"}}/>
-                      <div style={{fontSize:10,fontWeight:700,color:"var(--amber)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Wild Bloom Coaching — Group Level</div>
-                      {["Wild Bloom Wellness House coaching connection","Manager coaching and leadership support","Team workshop facilitation","Nervous system regulation training for teams","Stress management practices for meetings"].map(f=>(
+                      <div style={{fontSize:10,fontWeight:600,color:"var(--faint)",marginBottom:8}}>Everything in Insight, plus:</div>
+                      {["Monthly group coaching sessions","Nervous system and stress regulation training","Burnout education workshops","Team-based performance insights tied to behavior"].map(f=>(
                         <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:8}}>
                           <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B6F47" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span style={{fontSize:13,color:"var(--ink)",fontWeight:400,lineHeight:1.4}}>{f}</span>
+                          <span style={{fontSize:12,color:"var(--ink)",fontWeight:400,lineHeight:1.4}}>{f}</span>
                         </div>
                       ))}
-                      <div style={{height:1,background:"var(--border)",margin:"14px 0"}}/>
-                      <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:10}}>Wild Bloom Coaching — Individual Level</div>
-                      {["1-on-1 confidential employee coaching sessions","Anonymous support request from employee portal","Low wellness score auto-prompt for at-risk employees","Direct coaching access button in employee sidebar","Anonymous support tracking in owner dashboard"].map(f=>(
+                      <div style={{marginTop:14,padding:"10px 12px",background:"var(--wlight)",borderRadius:"var(--r)",fontSize:12,color:"var(--amber)",fontWeight:400,lineHeight:1.5,fontStyle:"italic"}}>
+                        Move from awareness to measurable improvement.
+                      </div>
+                    </div>
+
+                    {/* TIER 3 */}
+                    <div className="card" style={{border:"2px solid var(--ink)",position:"relative"}}>
+                      <div style={{position:"absolute",top:-1,right:16,background:"var(--ink)",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:"0 0 6px 6px",letterSpacing:".06em",textTransform:"uppercase"}}>Premium</div>
+                      <div style={{marginBottom:4}}>
+                        <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:6}}>Tier 3</div>
+                        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)",marginBottom:2}}>Transform</div>
+                        <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginBottom:6}}>$35 – $75 / employee / month</div>
+                        <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,marginBottom:14,fontStyle:"italic"}}>Full Workforce Transformation</div>
+                      </div>
+                      <div style={{background:"var(--alight)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies serious about retention and long-term performance</div>
+                      <div style={{height:1,background:"var(--border)",marginBottom:14}}/>
+                      <div style={{fontSize:10,fontWeight:600,color:"var(--faint)",marginBottom:8}}>Everything in Optimize, plus:</div>
+                      {["Leadership consulting and strategy calls","1-on-1 coaching access for leadership or high-risk employees","Custom burnout recovery plans","Priority support and implementation guidance"].map(f=>(
                         <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:8}}>
                           <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span style={{fontSize:13,color:"var(--accent)",fontWeight:600,lineHeight:1.4}}>{f}</span>
+                          <span style={{fontSize:12,color:"var(--accent)",fontWeight:600,lineHeight:1.4}}>{f}</span>
                         </div>
                       ))}
-                      <div style={{marginTop:14,padding:"11px 13px",background:"var(--alight)",borderRadius:"var(--r)",fontSize:12,color:"var(--accent)",fontWeight:400,lineHeight:1.6,borderLeft:"3px solid var(--accent)"}}>
-                        The only tier that includes confidential 1-on-1 employee coaching through Wild Bloom Wellness House.
+                      <div style={{marginTop:14,padding:"10px 12px",background:"var(--alight)",borderRadius:"var(--r)",fontSize:12,color:"var(--accent)",fontWeight:500,lineHeight:1.5,fontStyle:"italic",borderLeft:"3px solid var(--accent)"}}>
+                        Stabilize your workforce and unlock sustainable performance.
                       </div>
                     </div>
                   </div>
+
+                  {/* ADD-ONS */}
+                  <div className="card" style={{marginBottom:14}}>
+                    <div className="ct">Add-Ons <div className="ct-line"/></div>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+                      {[
+                        ["1-on-1 Coaching Sessions","$150 – $300 per session","Individual coaching with a certified Wild Bloom wellness coach. Scheduled directly through your company's HR team."],
+                        ["On-Site Workshops","Starting at $2,500","Half or full-day workshops delivered at your location. Topics include burnout prevention, nervous system regulation, and team resilience."],
+                        ["Leadership Intensives","Starting at $5,000","Off-site retreats available locally, statewide, nationally, and internationally. Custom programs for senior leadership teams."],
+                        ["Custom Implementation","Contact for pricing","White-glove onboarding, custom check-in questions, branded experience, and dedicated account support."],
+                      ].map(([title, price, desc])=>(
+                        <div key={title} style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r)",padding:"16px"}}>
+                          <div style={{fontWeight:600,fontSize:14,color:"var(--ink)",marginBottom:3}}>{title}</div>
+                          <div style={{fontSize:12,fontWeight:700,color:"var(--amber)",marginBottom:6}}>{price}</div>
+                          <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5}}>{desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CURRENT COMPANY TIERS */}
                   <div className="card">
                     <div className="ct">Current Company Tiers <div className="ct-line"/></div>
                     <table className="tbl">
@@ -880,10 +897,16 @@ function LeadershipApp({ user, onLogout }) {
     { id:"departments", label:"Departments", d:<><path d="M3 21h18M6 21V7a1 1 0 011-1h10a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4"/></> },
     { id:"trends", label:"Trends", d:<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></> },
     { id:"reports", label:"Reports", d:<><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></> },
+    { id:"actions", label:"Action Center", d:<><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></> },
   ];
   const toolsNav = [
     { id:"stress", label:"Stress Management", d:<><path d="M17 8C8 10 5.9 16.17 3.82 19.34c-.2.3.1.66.44.55C5.77 19.26 8.15 18.31 10 17"/><path d="M14 2s1 2 1 4-2 4-2 4"/></> },
     { id:"neuro", label:"Team Practices", d:<><path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 1012 18"/><path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1112 18"/></> },
+    { id:"resources", label:"Resources Library", d:<><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></> },
+  ];
+  const coachingNav = [
+    { id:"coaching", label:"Coaching Hub", d:<><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></> },
+    { id:"schedule", label:"Monthly Check-Ins", d:<><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></> },
   ];
   const companyNav = [
     { id:"company", label:"Company Settings", d:<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></> },
@@ -919,6 +942,13 @@ function LeadershipApp({ user, onLogout }) {
               {item.label}
             </div>
           ))}
+          <div className="sb-sec">Wild Bloom Coaching</div>
+          {coachingNav.map(item=>(
+            <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
+              <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+              {item.label}
+            </div>
+          ))}
           <div className="sb-sec">Workspace</div>
           {companyNav.map(item=>(
             <div key={item.id} className={"sb-item "+(page===item.id?"on":"")} onClick={()=>setPage(item.id)}>
@@ -941,6 +971,10 @@ function LeadershipApp({ user, onLogout }) {
               {page==="reports" && <ReportsPage checkins={checkins} user={user}/>}
               {page==="stress" && <ToolkitPage tools={STRESS_TOOLS} title="Stress Management" subtitle="Evidence-based techniques to share with your team"/>}
               {page==="neuro" && <ToolkitPage tools={NEURO_TOOLS} title="Team Practices" subtitle="Neurological practices to implement in meetings and team settings"/>}
+              {page==="actions" && <ActionCenterPage checkins={checkins} user={user}/>}
+              {page==="resources" && <ResourcesPage/>}
+              {page==="coaching" && <CoachingHubPage user={user}/>}
+              {page==="schedule" && <MonthlyCheckInPage user={user}/>}
               {page==="company" && <CompanyPage user={user}/>}
             </>
           )}
@@ -954,6 +988,24 @@ function LeadershipApp({ user, onLogout }) {
 const TT = { contentStyle:{borderRadius:6,border:"1px solid #E2D9CE",background:"#FDFCF9",fontSize:12} };
 
 function DashPage({ checkins, user }) {
+  const [companyInfo, setCompanyInfo] = useState(null);
+  const [teamSizeInput, setTeamSizeInput] = useState("");
+  const [savingSize, setSavingSize] = useState(false);
+
+  useEffect(()=>{
+    if(user.company_code) {
+      supabase.from("companies").select("name,team_size,status,tier").eq("code",user.company_code).maybeSingle()
+        .then(({data})=>{ if(data) { setCompanyInfo(data); setTeamSizeInput(data.team_size||""); } });
+    }
+  },[]);
+
+  async function saveTeamSize() {
+    setSavingSize(true);
+    await supabase.from("companies").update({team_size:parseInt(teamSizeInput)||null}).eq("code",user.company_code);
+    setCompanyInfo(prev=>({...prev,team_size:parseInt(teamSizeInput)||null}));
+    setSavingSize(false);
+  }
+
   const weeks = [...new Set(checkins.map(c=>c.week))];
   const cw = weeks[weeks.length-1];
   const depts = [...new Set(checkins.map(c=>c.department))].filter(Boolean);
@@ -965,13 +1017,19 @@ function DashPage({ checkins, user }) {
     if (!items.length) return null;
     const avg = k=>Math.round(items.reduce((a,b)=>a+(b[k]||0),0)/items.length);
     const score = Math.round((avg("stress")+avg("workload")+avg("relationships")+avg("manager")+avg("balance"))/5);
-    return { dept, score, stress:avg("stress"), workload:avg("workload"), relationships:avg("relationships"), manager:avg("manager"), balance:avg("balance"), count:items.length };
+    const lwItems = lw.filter(c=>c.department===dept);
+    const lwScore = lwItems.length ? Math.round(lwItems.reduce((a,b)=>a+Math.round((b.stress+b.workload+b.relationships+b.manager+b.balance)/5),0)/lwItems.length) : null;
+    const weekTrend = lwScore !== null ? score - lwScore : null;
+    return { dept, score, weekTrend, stress:avg("stress"), workload:avg("workload"), relationships:avg("relationships"), manager:avg("manager"), balance:avg("balance"), count:items.length };
   }).filter(Boolean).sort((a,b)=>a.score-b.score);
 
   const overall = ds.length ? Math.round(ds.reduce((a,b)=>a+b.score,0)/ds.length) : 0;
   const lastOverall = lw.length ? Math.round(lw.reduce((a,b)=>a+Math.round((b.stress+b.workload+b.relationships+b.manager+b.balance)/5),0)/lw.length) : 0;
   const trend = overall - lastOverall;
   const high = ds.filter(d=>getRisk(d.score)==="high").length;
+  const teamSize = companyInfo?.team_size || null;
+  const participationRate = teamSize ? Math.round((tw.length/teamSize)*100) : null;
+  const alerts = ds.filter(d=>d.weekTrend!==null && d.weekTrend<=-2);
 
   const radar = ["stress","workload","relationships","manager","balance"].map(k=>({
     subject: k.charAt(0).toUpperCase()+k.slice(1),
@@ -991,6 +1049,44 @@ function DashPage({ checkins, user }) {
         <div className="ph-title">Wellness Overview</div>
         <div className="ph-sub">{cw||"No data yet"} &nbsp;·&nbsp; {depts.length} departments &nbsp;·&nbsp; {tw.length} responses this week</div>
       </div>
+
+      {/* ALERTS */}
+      {alerts.length > 0 && (
+        <div style={{marginBottom:16,display:"flex",flexDirection:"column",gap:8}}>
+          {alerts.map(a=>(
+            <div key={a.dept} style={{background:"var(--dlight)",border:"1px solid #E8B4A0",borderRadius:"var(--r)",padding:"10px 16px",display:"flex",alignItems:"center",gap:12}}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A0522D" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span style={{fontSize:13,color:"var(--danger)",fontWeight:500}}><strong>{a.dept}</strong> dropped {Math.abs(a.weekTrend)} points this week — now at {a.score}/10. Consider reviewing workload or scheduling a coaching session.</span>
+              <button onClick={()=>window.location.href=`mailto:Miranda@wildbloomwellnesshouse.com?subject=Alert — ${a.dept} Wellness Drop&body=Hi Miranda, ${a.dept} dropped ${Math.abs(a.weekTrend)} points this week to ${a.score}/10. Can we discuss next steps?`} style={{marginLeft:"auto",fontSize:11,padding:"4px 12px",background:"var(--danger)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif",flexShrink:0}}>Alert Miranda</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ONBOARDING — show if no data yet */}
+      {checkins.length === 0 && (
+        <div className="card" style={{marginBottom:16,borderLeft:"4px solid var(--accent)"}}>
+          <div style={{fontFamily:"'DM Serif Display',serif",fontSize:18,marginBottom:12}}>Getting Started with WellPulse</div>
+          {[
+            [tw.length>0,"Share your company code with employees","Your code is "+( user.company_code||"N/A")+". Send it to employees so they can register on WellPulse."],
+            [false,"Employees complete their first check-in","Each week takes 2 minutes. Data appears here automatically after submission."],
+            [false,"Review your first dashboard","You'll see department scores, risk levels, and trends after the first check-ins come in."],
+            [false,"Schedule your first Wild Bloom check-in","Use the Monthly Check-Ins page to book your first conversation with Miranda."],
+          ].map(([done,title,desc],i)=>(
+            <div key={i} style={{display:"flex",gap:12,marginBottom:12,alignItems:"flex-start"}}>
+              <div style={{width:24,height:24,borderRadius:"50%",background:done?"var(--accent)":"var(--border)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                {done ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                : <span style={{fontSize:11,fontWeight:700,color:"var(--faint)"}}>{i+1}</span>}
+              </div>
+              <div>
+                <div style={{fontSize:13,fontWeight:600,color:done?"var(--accent)":"var(--ink)",marginBottom:2}}>{title}</div>
+                <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5}}>{desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="kgrid">
         <div className="kpi c1">
           <div className="kpi-lb">Overall Score</div>
@@ -1004,9 +1100,11 @@ function DashPage({ checkins, user }) {
           <div className="kpi-d">Require attention</div>
         </div>
         <div className="kpi c3">
-          <div className="kpi-lb">Responses</div>
-          <div className="kpi-v">{tw.length}</div>
-          <div className="kpi-d">This week</div>
+          <div className="kpi-lb">Participation</div>
+          <div className="kpi-v" style={{color:participationRate&&participationRate<50?"#A0522D":participationRate&&participationRate<75?"#C4956A":"#5C7A5C"}}>
+            {participationRate!==null?participationRate+"%":tw.length}
+          </div>
+          <div className="kpi-d">{participationRate!==null?tw.length+" of "+teamSize+" employees":"responses this week"}</div>
         </div>
         <div className="kpi c4">
           <div className="kpi-lb">Departments</div>
@@ -1014,10 +1112,52 @@ function DashPage({ checkins, user }) {
           <div className="kpi-d">Being tracked</div>
         </div>
       </div>
+
+      {/* TEAM SIZE INPUT */}
+      {!teamSize && checkins.length > 0 && (
+        <div style={{background:"var(--wlight)",border:"1px solid #E8D5B7",borderRadius:"var(--r)",padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B6F47" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span style={{fontSize:13,color:"var(--amber)",fontWeight:400,flex:1}}>Add your total employee count to see participation rate — a key metric for data reliability.</span>
+          <input value={teamSizeInput} onChange={e=>setTeamSizeInput(e.target.value)} placeholder="e.g. 150" style={{width:80,padding:"6px 10px",border:"1.5px solid var(--border)",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,textAlign:"center"}}/>
+          <button onClick={saveTeamSize} disabled={savingSize} style={{padding:"6px 14px",background:"var(--amber)",color:"#fff",border:"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:600,cursor:"pointer"}}>{savingSize?"Saving...":"Save"}</button>
+        </div>
+      )}
       {checkins.length===0 ? (
         <div className="card"><div className="empty"><div className="empty-t">No data yet</div><div className="empty-s">Share your company code <strong>{user.company_code}</strong> with employees so they can register and complete their weekly check-ins.</div></div></div>
       ) : (
         <>
+          {/* DEPARTMENT RANKING */}
+          <div className="card" style={{marginBottom:16}}>
+            <div className="ct">Department Ranking — Healthiest to Most At Risk <div className="ct-line"/></div>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {[...ds].sort((a,b)=>b.score-a.score).map((d,i)=>(
+                <div key={d.dept} style={{display:"flex",alignItems:"center",gap:12}}>
+                  <div style={{width:22,height:22,borderRadius:"50%",background:i===0?"var(--alight)":i===ds.length-1&&getRisk(d.score)==="high"?"var(--dlight)":"var(--surface2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:i===0?"var(--accent)":i===ds.length-1&&getRisk(d.score)==="high"?"var(--danger)":"var(--faint)",flexShrink:0}}>{i+1}</div>
+                  <div style={{fontSize:13,fontWeight:500,minWidth:120}}>{d.dept}</div>
+                  <div style={{flex:1,height:8,background:"var(--border)",borderRadius:4,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${d.score*10}%`,background:getRiskColor(d.score),borderRadius:4,transition:"width .3s"}}/>
+                  </div>
+                  <div style={{fontSize:13,fontWeight:700,color:getRiskColor(d.score),minWidth:36,textAlign:"right"}}>{d.score}/10</div>
+                  <span className={"badge "+getRisk(d.score)} style={{minWidth:90,justifyContent:"center"}}><span className="badge-dot"/>{getRiskLabel(d.score)}</span>
+                  {d.weekTrend!==null && (
+                    <span style={{fontSize:11,fontWeight:600,color:d.weekTrend>0?"var(--accent)":d.weekTrend<0?"var(--danger)":"var(--faint)",minWidth:32,textAlign:"right"}}>
+                      {d.weekTrend>0?"↑"+d.weekTrend:d.weekTrend<0?"↓"+Math.abs(d.weekTrend):"—"}
+                    </span>
+                  )}
+                  <div style={{fontSize:11,color:"var(--faint)",minWidth:60,textAlign:"right"}}>{d.count} {d.count===1?"response":"responses"}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* PRIVACY NOTICE */}
+          <div style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r)",padding:"10px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:10}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span style={{fontSize:12,color:"var(--soft)",fontWeight:300}}>
+              <strong style={{color:"var(--ink)",fontWeight:600}}>Employee Privacy:</strong> All check-in responses are anonymous. Individual employees are never identified in this dashboard. You see aggregated department scores only.
+            </span>
+          </div>
+
           <div className="g2">
             <div className="card">
               <div className="ct">Wellness by Category <div className="ct-line"/></div>
@@ -1330,6 +1470,264 @@ function CompanyPage({ user }) {
           Leadership sees aggregated department scores only. No individual employee is ever identified by name in the dashboard or reports.
           Employees can complete their check-in knowing their response contributes to team-level data, not personal performance tracking.
         </p>
+      </div>
+    </div>
+  );
+}
+
+
+function ActionCenterPage({ checkins, user }) {
+  const weeks = [...new Set(checkins.map(c=>c.week))];
+  const cw = weeks[weeks.length-1];
+  const depts = [...new Set(checkins.map(c=>c.department))].filter(Boolean);
+  const thisWeek = checkins.filter(c=>c.week===cw);
+
+  const deptSummary = depts.map(dept=>{
+    const items = thisWeek.filter(c=>c.department===dept);
+    if (!items.length) return null;
+    const avg = k=>Math.round(items.reduce((a,b)=>a+(b[k]||0),0)/items.length);
+    const score = Math.round((avg("stress")+avg("workload")+avg("relationships")+avg("manager")+avg("balance"))/5);
+    return { dept, score, stress:avg("stress"), workload:avg("workload"), relationships:avg("relationships"), manager:avg("manager"), balance:avg("balance"), count:items.length };
+  }).filter(Boolean).sort((a,b)=>a.score-b.score);
+
+  const high = deptSummary.filter(d=>getRisk(d.score)==="high");
+  const medium = deptSummary.filter(d=>getRisk(d.score)==="medium");
+  const low = deptSummary.filter(d=>getRisk(d.score)==="low");
+
+  const actions = [
+    ...high.map(d=>({ priority:"urgent", dept:d.dept, score:d.score,
+      title:`${d.dept} is at High Risk`,
+      desc:`With a score of ${d.score}/10, this department needs immediate attention. Consider scheduling a team coaching session or 1-on-1 conversations with team leads.`,
+      steps:["Schedule a leadership check-in with the department head this week","Review recent workload and deadlines for signs of overload","Consider a team reset session with Wild Bloom","Monitor next week's check-in scores closely"],
+      color:"var(--danger)", bg:"var(--dlight)"
+    })),
+    ...medium.map(d=>({ priority:"watch", dept:d.dept, score:d.score,
+      title:`${d.dept} Needs Monitoring`,
+      desc:`Score of ${d.score}/10 — trending toward risk. Proactive support now prevents escalation.`,
+      steps:["Open a direct conversation with your team lead about workload","Implement a team practice from the Team Practices library","Schedule a group coaching session in the next 30 days","Check if deadlines or org changes are contributing to stress"],
+      color:"var(--warn)", bg:"var(--wlight)"
+    })),
+    ...low.map(d=>({ priority:"healthy", dept:d.dept, score:d.score,
+      title:`${d.dept} is Thriving`,
+      desc:`Score of ${d.score}/10 — this team is in a healthy place. Protect and sustain what's working.`,
+      steps:["Acknowledge and celebrate this team's wellbeing","Document what practices are working here","Consider asking this team to mentor others","Continue monthly check-ins to maintain momentum"],
+      color:"var(--accent)", bg:"var(--alight)"
+    })),
+  ];
+
+  return (
+    <div className="main">
+      <div className="ph">
+        <div className="crumb">WellPulse · Action Center</div>
+        <div className="ph-title">Action Center</div>
+        <div className="ph-sub">Recommended actions based on your current wellness data — {cw||"no data yet"}</div>
+      </div>
+
+      {actions.length === 0 ? (
+        <div className="card"><div className="empty"><div className="empty-t">No data yet</div><div className="empty-s">Action recommendations will appear once employees complete their check-ins.</div></div></div>
+      ) : (
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          {actions.map((a,i)=>(
+            <div key={i} className="card" style={{borderLeft:`4px solid ${a.color}`}}>
+              <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:10}}>
+                <div>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                    <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",background:a.bg,color:a.color,padding:"2px 8px",borderRadius:20}}>
+                      {a.priority==="urgent"?"Urgent Action":a.priority==="watch"?"Monitor Closely":"Healthy"}
+                    </span>
+                    <span style={{fontSize:11,color:"var(--faint)"}}>Score: {a.score}/10</span>
+                  </div>
+                  <div style={{fontFamily:"'DM Serif Display',serif",fontSize:18,color:"var(--ink)",marginBottom:4}}>{a.title}</div>
+                  <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.6,maxWidth:600}}>{a.desc}</div>
+                </div>
+              </div>
+              <div style={{height:1,background:"var(--border)",margin:"12px 0"}}/>
+              <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".07em",marginBottom:10}}>Recommended Steps</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                {a.steps.map((s,j)=>(
+                  <div key={j} style={{display:"flex",gap:9,alignItems:"flex-start"}}>
+                    <div style={{width:18,height:18,borderRadius:"50%",background:a.bg,color:a.color,fontSize:10,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>{j+1}</div>
+                    <span style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5}}>{s}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{marginTop:14,display:"flex",gap:10}}>
+                <a href="mailto:Miranda@wildbloomwellnesshouse.com?subject=Coaching Request — "+a.dept style={{fontSize:12,padding:"7px 16px",background:"var(--ink)",color:"#fff",borderRadius:"var(--r)",textDecoration:"none",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Request Coaching for {a.dept}</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ResourcesPage() {
+  const [open, setOpen] = useState(null);
+  const resources = [
+    { id:1, cat:"Leadership", title:"The Manager's Guide to Burnout Prevention", desc:"A practical framework for recognizing the early signs of burnout in your team — before they become performance issues or resignations.", content:"Burnout rarely arrives suddenly. It accumulates in small, consistent patterns that most managers miss because they're too close to the day-to-day. The three most reliable early signals are: a decline in the quality of work rather than the quantity, withdrawal from collaborative conversations, and an increase in cynicism or detachment. When you see these, the instinct is often to address performance directly. That is almost always the wrong move. The right move is a private, low-stakes check-in conversation that asks about capacity, not output. Try: 'I've noticed you seem a little quieter lately — how are you doing with your current workload?' That one question, asked with genuine curiosity, opens more doors than any performance review." },
+    { id:2, cat:"Research", title:"Why High Performers Burn Out First", desc:"Counter-intuitive data on who is most at risk in your organization — and why your best people may be the most vulnerable.", content:"The highest performers in any organization are statistically the most burnout-prone. The reasons are structural, not personal. They take on more because they can. They say yes because they're reliable. They don't ask for help because they've built an identity around not needing it. They absorb the ambiguity, the undefined projects, the culture-carrying labor that nobody else wants to touch. And they do it while continuing to deliver — until they don't. The first sign is often a resignation that nobody saw coming. The best managers create deliberate capacity protection for their top performers. That means saying no on their behalf, protecting their time, and checking in on their energy regularly — not just their output." },
+    { id:3, cat:"Communication", title:"How to Have a Burnout Conversation", desc:"A step-by-step guide for managers on initiating difficult conversations about stress, capacity, and wellbeing without it feeling clinical.", content:"The biggest mistake managers make is framing the conversation around performance. That immediately activates defensiveness. Instead, frame it around the relationship and your own observations. Structure: (1) Open with warmth — 'I wanted to check in because I care about how you're doing, not just what you're delivering.' (2) Share a specific observation — 'I've noticed you seem more stretched than usual lately.' (3) Ask an open question — 'What's been the heaviest part of your workload recently?' (4) Listen fully before responding. Do not problem-solve in the first conversation. Just listen. (5) Close with an offer — 'I want to support you. What would feel most helpful right now?' The goal of this conversation is to make the person feel seen — not fixed." },
+    { id:4, cat:"Culture", title:"Building Psychological Safety in Your Team", desc:"Based on Google's Project Aristotle — the research-backed practices that make teams perform at their highest level.", content:"Google's five-year study on team performance found that psychological safety — the belief that you can speak up without fear of humiliation or punishment — was the single most important factor in team effectiveness. More than talent, more than tools, more than strategy. Building it requires four consistent behaviors from leaders: (1) Model vulnerability — share your own uncertainties and mistakes openly. (2) Respond to bad news with curiosity, not blame. (3) Actively invite dissenting opinions in meetings. (4) Follow through on what you say you'll do. Psychological safety is not about being nice. It's about creating an environment where truth-telling is safe — and that starts with the leader." },
+    { id:5, cat:"Research", title:"The Neuroscience of Stress at Work", desc:"What actually happens in the brain under chronic workplace stress — and why traditional approaches to wellness miss the point.", content:"Chronic workplace stress does not feel like acute stress. It doesn't spike and resolve. It accumulates at a level below conscious awareness, gradually raising baseline cortisol, narrowing cognitive bandwidth, and increasing amygdala reactivity. The result is a workforce that is technically functioning but operating at a fraction of their cognitive and creative capacity. The prefrontal cortex — responsible for complex decision-making, empathy, and strategic thinking — is the first casualty of chronic stress. This is why burned-out teams make poor decisions, communicate badly, and lose creativity — long before they stop showing up. The implication for leaders is clear: investing in nervous system regulation is not a wellness perk. It is a performance strategy." },
+    { id:6, cat:"Leadership", title:"The 90-Day Retention Reset", desc:"A structured leadership program for stabilizing a team experiencing high turnover or collective burnout.", content:"When a team enters a collective burnout cycle, the instinct is to address the individuals who are struggling. This is insufficient. The environment that created the burnout is still intact. A 90-day retention reset requires three parallel tracks: (1) Structural — audit workload, eliminate low-value work, protect recovery time. (2) Relational — increase the frequency and quality of 1-on-1 conversations. Reduce performance language. Increase human language. (3) Cultural — implement one team ritual per week that builds psychological safety and recognition. At 30, 60, and 90 days, measure using WellPulse data whether scores are trending upward. If not, escalate to coaching support." },
+  ];
+
+  return (
+    <div className="main">
+      <div className="ph">
+        <div className="crumb">WellPulse · Resources Library</div>
+        <div className="ph-title">Resources Library</div>
+        <div className="ph-sub">Curated guides, research, and frameworks for leaders on burnout, retention, and team performance</div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:14}}>
+        {resources.map(r=>(
+          <div key={r.id} className="card" style={{cursor:"pointer",transition:"all .15s"}} onClick={()=>setOpen(open===r.id?null:r.id)}>
+            <div style={{fontSize:10,fontWeight:700,color:"var(--amber)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:6}}>{r.cat}</div>
+            <div style={{fontSize:15,fontWeight:600,color:"var(--ink)",marginBottom:6,lineHeight:1.3}}>{r.title}</div>
+            <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.55,marginBottom:12}}>{r.desc}</div>
+            {open===r.id && (
+              <div style={{marginBottom:12,padding:"14px 16px",background:"var(--surface2)",borderRadius:"var(--r)",fontSize:13,color:"var(--soft)",lineHeight:1.75,fontWeight:300,borderLeft:"3px solid var(--accent)"}}>{r.content}</div>
+            )}
+            <div style={{fontSize:12,fontWeight:600,color:"var(--accent)"}}>{open===r.id?"— Read less":"+ Read more"}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CoachingHubPage({ user }) {
+  const [sent, setSent] = useState(null);
+  const services = [
+    { id:"group", title:"Monthly Group Coaching Session", desc:"A facilitated 60-minute session for your leadership team or a specific department. Focused on stress regulation, communication, and team dynamics.", duration:"60 minutes", format:"Virtual or On-Site", tier:"Optimize + Transform" },
+    { id:"onsite", title:"On-Site Team Workshop", desc:"A half or full-day workshop delivered at your location. Covers burnout prevention, nervous system regulation, and practical team resilience tools.", duration:"Half or Full Day", format:"On-Site", tier:"All Tiers (Add-On)" },
+    { id:"leadership", title:"Leadership Intensive", desc:"An immersive retreat for senior leadership teams. Available locally, statewide, nationally, and internationally. Custom programs built around your data.", duration:"1–3 Days", format:"Off-Site Retreat", tier:"Transform + Add-On" },
+    { id:"oneone", title:"1-on-1 Coaching Session", desc:"A confidential 50-minute coaching session with a certified Wild Bloom wellness coach. Available for individual leaders or high-risk employees.", duration:"50 minutes", format:"Virtual", tier:"Transform + Add-On" },
+  ];
+
+  function requestService(service) {
+    window.location.href = `mailto:Miranda@wildbloomwellnesshouse.com?subject=Coaching Request — ${service.title}&body=Hello Miranda,%0A%0AI would like to request a ${service.title} for our team.%0A%0ACompany Code: ${user.company_code||"N/A"}%0ADepartment/Team: %0APreferred Dates: %0AAdditional Notes: %0A%0AThank you`;
+    setSent(service.id);
+  }
+
+  return (
+    <div className="main">
+      <div className="ph">
+        <div className="crumb">WellPulse · Coaching Hub</div>
+        <div className="ph-title">Coaching Hub</div>
+        <div className="ph-sub">Book coaching sessions and workshops directly with Wild Bloom Wellness House</div>
+      </div>
+
+      <div className="card" style={{marginBottom:16,background:"var(--ink)",border:"none"}}>
+        <div style={{display:"flex",alignItems:"center",gap:20}}>
+          <div style={{flex:1}}>
+            <div style={{fontFamily:"'DM Serif Display',serif",fontSize:20,color:"#fff",marginBottom:4}}>Wild Bloom Wellness House</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontWeight:300,lineHeight:1.6}}>Certified professional coaching for burnout recovery, stress management, and nervous system regulation in workplace settings.</div>
+          </div>
+          <a href="mailto:Miranda@wildbloomwellnesshouse.com" style={{padding:"10px 20px",background:"var(--accent)",color:"#fff",borderRadius:"var(--r)",textDecoration:"none",fontSize:13,fontWeight:600,fontFamily:"'DM Sans',sans-serif",flexShrink:0}}>Contact Miranda</a>
+        </div>
+      </div>
+
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+        {services.map(s=>(
+          <div key={s.id} className="card">
+            <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:6}}>{s.tier}</div>
+            <div style={{fontFamily:"'DM Serif Display',serif",fontSize:18,color:"var(--ink)",marginBottom:6}}>{s.title}</div>
+            <div style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.6,marginBottom:14}}>{s.desc}</div>
+            <div style={{display:"flex",gap:16,marginBottom:14}}>
+              <div style={{fontSize:12,color:"var(--faint)"}}>⏱ {s.duration}</div>
+              <div style={{fontSize:12,color:"var(--faint)"}}>📍 {s.format}</div>
+            </div>
+            <button onClick={()=>requestService(s)} style={{width:"100%",padding:"9px",background:sent===s.id?"var(--alight)":"var(--ink)",color:sent===s.id?"var(--accent)":"#fff",border:sent===s.id?"1px solid var(--accent)":"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,cursor:"pointer"}}>
+              {sent===s.id?"Request Sent — Check Your Email":"Request This Service"}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MonthlyCheckInPage({ user }) {
+  const [note, setNote] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const month = new Date().toLocaleString("default",{month:"long",year:"numeric"});
+
+  function scheduleCheckIn() {
+    window.location.href = `mailto:Miranda@wildbloomwellnesshouse.com?subject=Monthly Leadership Check-In Request — ${month}&body=Hello Miranda,%0A%0AI would like to schedule our monthly leadership check-in for ${month}.%0A%0ACompany Code: ${user.company_code||"N/A"}%0APreferred Times: %0ANotes for this month: ${note||"N/A"}%0A%0AThank you`;
+    setSubmitted(true);
+  }
+
+  const pastCheckins = [
+    { month:"April 2026", status:"Completed", notes:"Discussed Engineering team stress levels. Action: scheduled group session for May." },
+    { month:"March 2026", status:"Completed", notes:"Reviewed Q1 wellness trends. Overall score improved from 5.2 to 6.1." },
+  ];
+
+  return (
+    <div className="main">
+      <div className="ph">
+        <div className="crumb">WellPulse · Monthly Check-Ins</div>
+        <div className="ph-title">Monthly Check-Ins</div>
+        <div className="ph-sub">Schedule and track your monthly leadership conversations with Wild Bloom</div>
+      </div>
+
+      <div className="g2">
+        <div className="card">
+          <div className="ct">Schedule — {month} <div className="ct-line"/></div>
+          <p style={{fontSize:13,color:"var(--soft)",fontWeight:300,lineHeight:1.7,marginBottom:16}}>
+            Your monthly leadership check-in is a 30-minute conversation with Miranda to review your WellPulse data, discuss what's working, and align on next steps for your team's wellness.
+          </p>
+          <div style={{marginBottom:16}}>
+            <label style={{display:"block",fontSize:11,fontWeight:600,color:"var(--soft)",marginBottom:6,textTransform:"uppercase",letterSpacing:".05em"}}>Notes for this month (optional)</label>
+            <textarea value={note} onChange={e=>setNote(e.target.value)} placeholder="e.g. Engineering scores dropped this week. Sales team is doing well. Want to discuss Q2 strategy..." style={{width:"100%",padding:"10px 12px",border:"1.5px solid var(--border)",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,color:"var(--ink)",background:"var(--surface2)",outline:"none",resize:"vertical",minHeight:80,lineHeight:1.6}}/>
+          </div>
+          {submitted ? (
+            <div style={{padding:"12px 14px",background:"var(--alight)",borderRadius:"var(--r)",fontSize:13,color:"var(--accent)",fontWeight:400,lineHeight:1.5}}>
+              Request sent! Miranda will respond within 24 hours to confirm your session time.
+            </div>
+          ) : (
+            <button className="btn" onClick={scheduleCheckIn} style={{marginTop:0}}>Schedule Monthly Check-In</button>
+          )}
+        </div>
+
+        <div className="card">
+          <div className="ct">What to Expect <div className="ct-line"/></div>
+          {[
+            ["WellPulse Data Review","Miranda reviews your latest check-in scores, department trends, and any flagged concerns before the call."],
+            ["Leadership Conversation","A 30-minute focused conversation on what the data means for your team and what actions make sense right now."],
+            ["Action Planning","Clear next steps — whether that's a team coaching session, a leadership conversation, or a structural change."],
+            ["Follow-Through","Miranda follows up between sessions if new data suggests your team needs additional support."],
+          ].map(([t,d])=>(
+            <div key={t} style={{display:"flex",gap:12,marginBottom:14,alignItems:"flex-start"}}>
+              <div style={{width:6,height:6,borderRadius:"50%",background:"var(--accent)",flexShrink:0,marginTop:6}}/>
+              <div>
+                <div style={{fontSize:13,fontWeight:600,color:"var(--ink)",marginBottom:2}}>{t}</div>
+                <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5}}>{d}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card" style={{marginTop:14}}>
+        <div className="ct">Past Check-Ins <div className="ct-line"/></div>
+        {pastCheckins.length===0 ? (
+          <div className="empty" style={{padding:"30px 0"}}><div className="empty-s">No past check-ins yet. Your history will appear here.</div></div>
+        ) : (
+          <table className="tbl">
+            <thead><tr><th>Month</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+              {pastCheckins.map(c=>(
+                <tr key={c.month}>
+                  <td style={{fontWeight:500}}>{c.month}</td>
+                  <td><span style={{fontSize:11,fontWeight:700,background:"var(--alight)",color:"var(--accent)",padding:"2px 9px",borderRadius:20}}>{c.status}</span></td>
+                  <td style={{fontSize:12,color:"var(--soft)",fontWeight:300}}>{c.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
