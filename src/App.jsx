@@ -1705,8 +1705,10 @@ function CompanyPage({ user }) {
     }
     setCheckingOut(tier);
     const link = STRIPE_LINKS[tier];
-    // Pass company code and seats as URL params for reference
-    const url = `${link}?prefilled_quantity=${parseInt(seats)}&client_reference_id=${user.company_code}`;
+    const qty = parseInt(seats);
+    const code = user.company_code || "";
+    // Stripe payment link quantity parameter
+    const url = `${link}?prefilled_quantity=${qty}&quantity=${qty}&client_reference_id=${code}&prefilled_email=${user.email||""}`;
     window.open(url, '_blank');
     setCheckingOut(null);
   }
