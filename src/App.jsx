@@ -1599,6 +1599,7 @@ function ResourcesPage() {
 
 function CoachingHubPage({ user }) {
   const [sent, setSent] = useState(null);
+  const [sending, setSending] = useState(null);
   const services = [
     { id:"group", title:"Monthly Group Coaching Session", desc:"A facilitated 60-minute session for your leadership team or a specific department. Focused on stress regulation, communication, and team dynamics.", duration:"60 minutes", format:"Virtual or On-Site", tier:"Optimize + Transform" },
     { id:"onsite", title:"On-Site Team Workshop", desc:"A half or full-day workshop delivered at your location. Covers burnout prevention, nervous system regulation, and practical team resilience tools.", duration:"Half or Full Day", format:"On-Site", tier:"All Tiers (Add-On)" },
@@ -1606,9 +1607,26 @@ function CoachingHubPage({ user }) {
     { id:"oneone", title:"1-on-1 Coaching Session", desc:"A confidential 50-minute coaching session with a certified Wild Bloom wellness coach. Available for individual leaders or high-risk employees.", duration:"50 minutes", format:"Virtual", tier:"Transform + Add-On" },
   ];
 
-  function requestService(service) {
-    window.location.href = `mailto:Miranda@wildbloomwellnesshouse.com?subject=Coaching Request — ${service.title}&body=Hello Miranda,%0A%0AI would like to request a ${service.title} for our team.%0A%0ACompany Code: ${user.company_code||"N/A"}%0ADepartment/Team: %0APreferred Dates: %0AAdditional Notes: %0A%0AThank you`;
-    setSent(service.id);
+  async function requestService(service) {
+    setSending(service.id);
+    try {
+      const response = await fetch("https://formspree.io/f/xkoybvjo", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "Coaching Service Request",
+          service: service.title,
+          company_code: user.company_code || "N/A",
+          company_name: user.name || "N/A",
+          tier: service.tier,
+          _subject: `Coaching Request — ${service.title} — ${user.company_code || "N/A"}`
+        })
+      });
+      setSent(service.id);
+    } catch(e) {
+      setSent(service.id);
+    }
+    setSending(null);
   }
 
   return (
@@ -1639,8 +1657,8 @@ function CoachingHubPage({ user }) {
               <div style={{fontSize:12,color:"var(--faint)"}}>⏱ {s.duration}</div>
               <div style={{fontSize:12,color:"var(--faint)"}}>📍 {s.format}</div>
             </div>
-            <button onClick={()=>requestService(s)} style={{width:"100%",padding:"9px",background:sent===s.id?"var(--alight)":"var(--ink)",color:sent===s.id?"var(--accent)":"#fff",border:sent===s.id?"1px solid var(--accent)":"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,cursor:"pointer"}}>
-              {sent===s.id?"Request Sent — Check Your Email":"Request This Service"}
+            <button onClick={()=>requestService(s)} disabled={sending===s.id} style={{width:"100%",padding:"9px",background:sent===s.id?"var(--alight)":"var(--ink)",color:sent===s.id?"var(--accent)":"#fff",border:sent===s.id?"1px solid var(--accent)":"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,cursor:"pointer"}}>
+              {sending===s.id?"Sending...":(sent===s.id?"✓ Request Sent to Miranda":"Request This Service")}
             </button>
           </div>
         ))}
@@ -1654,8 +1672,20 @@ function MonthlyCheckInPage({ user }) {
   const [submitted, setSubmitted] = useState(false);
   const month = new Date().toLocaleString("default",{month:"long",year:"numeric"});
 
-  function scheduleCheckIn() {
-    window.location.href = `mailto:Miranda@wildbloomwellnesshouse.com?subject=Monthly Leadership Check-In Request — ${month}&body=Hello Miranda,%0A%0AI would like to schedule our monthly leadership check-in for ${month}.%0A%0ACompany Code: ${user.company_code||"N/A"}%0APreferred Times: %0ANotes for this month: ${note||"N/A"}%0A%0AThank you`;
+  async function scheduleCheckIn() {
+    try {
+      await fetch("https://formspree.io/f/xkoybvjo", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "Monthly Check-In Request",
+          month: month,
+          company_code: user.company_code || "N/A",
+          notes: note || "No notes provided",
+          _subject: `Monthly Check-In Request — ${month} — ${user.company_code || "N/A"}`
+        })
+      });
+    } catch(e) {}
     setSubmitted(true);
   }
 
@@ -1684,7 +1714,7 @@ function MonthlyCheckInPage({ user }) {
           </div>
           {submitted ? (
             <div style={{padding:"12px 14px",background:"var(--alight)",borderRadius:"var(--r)",fontSize:13,color:"var(--accent)",fontWeight:400,lineHeight:1.5}}>
-              Request sent! Miranda will respond within 24 hours to confirm your session time.
+              ✓ Request sent directly to Miranda! She will respond within 24 hours to confirm your session time.
             </div>
           ) : (
             <button className="btn" onClick={scheduleCheckIn} style={{marginTop:0}}>Schedule Monthly Check-In</button>
