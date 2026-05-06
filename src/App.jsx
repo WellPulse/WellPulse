@@ -1552,7 +1552,7 @@ function ActionCenterPage({ checkins, user }) {
                 ))}
               </div>
               <div style={{marginTop:14,display:"flex",gap:10}}>
-                <a href="mailto:Miranda@wildbloomwellnesshouse.com?subject=Coaching Request — "+a.dept style={{fontSize:12,padding:"7px 16px",background:"var(--ink)",color:"#fff",borderRadius:"var(--r)",textDecoration:"none",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Request Coaching for {a.dept}</a>
+                <a href={`mailto:Miranda@wildbloomwellnesshouse.com?subject=Coaching Request — ${a.dept}`} style={{fontSize:12,padding:"7px 16px",background:"var(--ink)",color:"#fff",borderRadius:"var(--r)",textDecoration:"none",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Request Coaching for {a.dept}</a>
               </div>
             </div>
           ))}
