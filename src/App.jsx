@@ -1419,30 +1419,22 @@ function CompanyPage({ user }) {
     }
   },[]);
 
-  async function startCheckout(tier) {
+  const STRIPE_LINKS = {
+    insights: "https://buy.stripe.com/bJeeVcfLt4dE9SJdpCbEA00",
+    optimize: "https://buy.stripe.com/8x2dR89n5eSi6GxadqbEA01",
+    transform: "https://buy.stripe.com/dRm5kCfLtbG65Ct4T6bEA02",
+  };
+
+  function startCheckout(tier) {
     if (!seats || parseInt(seats) < 1) {
       alert("Please enter the number of employees first.");
       return;
     }
     setCheckingOut(tier);
-    try {
-      const res = await fetch("/api/create-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tier,
-          quantity: parseInt(seats),
-          company_code: user.company_code,
-          company_name: companyInfo?.name || "",
-          email: user.email || "",
-        })
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-      else alert("Error starting checkout. Please contact Miranda@wildbloomwellnesshouse.com");
-    } catch(e) {
-      alert("Error starting checkout. Please contact Miranda@wildbloomwellnesshouse.com");
-    }
+    const link = STRIPE_LINKS[tier];
+    // Pass company code and seats as URL params for reference
+    const url = `${link}?prefilled_quantity=${parseInt(seats)}&client_reference_id=${user.company_code}`;
+    window.open(url, '_blank');
     setCheckingOut(null);
   }
 
