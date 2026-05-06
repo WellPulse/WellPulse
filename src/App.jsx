@@ -1404,8 +1404,47 @@ function ReportsPage({ checkins, user }) {
   );
 }
 
+const STRIPE_PK = "pk_test_51TTjzbFtp9gRD2WdGQsNm5W68oG7K7ILuyBQ4CQ8iysja3A6shVSJhKDA4wj4LKmQob3NPxOq3eIpsLgsK0U6H0x00pqKLkwSm";
+
 function CompanyPage({ user }) {
   const [copied, setCopied] = useState(false);
+  const [checkingOut, setCheckingOut] = useState(null);
+  const [seats, setSeats] = useState("");
+  const [companyInfo, setCompanyInfo] = useState(null);
+
+  useEffect(()=>{
+    if(user.company_code){
+      supabase.from("companies").select("status,plan,tier,team_size").eq("code",user.company_code).maybeSingle()
+        .then(({data})=>{ if(data) setCompanyInfo(data); });
+    }
+  },[]);
+
+  async function startCheckout(tier) {
+    if (!seats || parseInt(seats) < 1) {
+      alert("Please enter the number of employees first.");
+      return;
+    }
+    setCheckingOut(tier);
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tier,
+          quantity: parseInt(seats),
+          company_code: user.company_code,
+          company_name: companyInfo?.name || "",
+          email: user.email || "",
+        })
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else alert("Error starting checkout. Please contact Miranda@wildbloomwellnesshouse.com");
+    } catch(e) {
+      alert("Error starting checkout. Please contact Miranda@wildbloomwellnesshouse.com");
+    }
+    setCheckingOut(null);
+  }
 
   function copyCode() {
     navigator.clipboard.writeText(user.company_code || "");
@@ -1413,12 +1452,74 @@ function CompanyPage({ user }) {
     setTimeout(() => setCopied(false), 2000);
   }
 
+  const tierLabels = { insights:"Insight", optimize:"Optimize", transform:"Transform" };
+  const tierColors = { insights:"var(--accent)", optimize:"var(--amber)", transform:"var(--ink)" };
+
   return (
     <div className="main">
       <div className="ph">
         <div className="crumb">WellPulse · Company Settings</div>
         <div className="ph-title">Company Settings</div>
         <div className="ph-sub">Manage your workspace and employee access</div>
+      </div>
+
+      {/* SUBSCRIPTION STATUS */}
+      <div className="card" style={{marginBottom:14}}>
+        <div className="ct">Subscription <div className="ct-line"/></div>
+        {companyInfo ? (
+          <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:16}}>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600,color:"var(--ink)",marginBottom:3}}>
+                Current Plan: <span style={{color:tierColors[companyInfo.tier]||"var(--accent)"}}>WellPulse {tierLabels[companyInfo.tier]||"Insight"}</span>
+              </div>
+              <div style={{fontSize:12,color:"var(--soft)",fontWeight:300}}>
+                Status: <span style={{fontWeight:600,color:companyInfo.status==="active"?"var(--accent)":companyInfo.status==="trial"?"var(--warn)":"var(--danger)",textTransform:"capitalize"}}>{companyInfo.status||"Trial"}</span>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        <div style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r)",padding:"16px",marginBottom:14}}>
+          <div style={{fontSize:12,fontWeight:600,color:"var(--ink)",marginBottom:8}}>Upgrade or subscribe</div>
+          <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,marginBottom:12}}>Enter the number of employees in your company to calculate your monthly subscription.</div>
+          <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:14}}>
+            <input
+              type="number"
+              value={seats}
+              onChange={e=>setSeats(e.target.value)}
+              placeholder="e.g. 150"
+              min="1"
+              style={{width:100,padding:"8px 12px",border:"1.5px solid var(--border)",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:14,color:"var(--ink)",background:"var(--surface)",outline:"none"}}
+            />
+            <span style={{fontSize:13,color:"var(--soft)",fontWeight:300}}>employees</span>
+            {seats && parseInt(seats) > 0 && (
+              <span style={{fontSize:12,color:"var(--faint)",marginLeft:8}}>
+                Insight: ${(8*parseInt(seats)).toLocaleString()}/mo · Optimize: ${(22*parseInt(seats)).toLocaleString()}/mo · Transform: ${(44*parseInt(seats)).toLocaleString()}/mo
+              </span>
+            )}
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+            {[["insights","Insight","$8/employee","var(--alight)","var(--accent)"],
+              ["optimize","Optimize","$22/employee","var(--wlight)","var(--amber)"],
+              ["transform","Transform","$44/employee","var(--surface2)","var(--ink)"]
+            ].map(([tier,label,price,bg,color])=>(
+              <div key={tier} style={{background:bg,border:`1px solid var(--border)`,borderRadius:"var(--r)",padding:"12px",textAlign:"center"}}>
+                <div style={{fontSize:12,fontWeight:700,color,marginBottom:2}}>{label}</div>
+                <div style={{fontSize:11,color:"var(--faint)",marginBottom:10}}>{price}/month</div>
+                <button
+                  onClick={()=>startCheckout(tier)}
+                  disabled={checkingOut===tier}
+                  style={{width:"100%",padding:"7px",background:color,color:"#fff",border:"none",borderRadius:"var(--r)",fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:600,cursor:"pointer"}}
+                >
+                  {checkingOut===tier?"Redirecting...":"Subscribe"}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p style={{fontSize:11,color:"var(--faint)",fontWeight:300,lineHeight:1.5}}>
+          Payments are processed securely by Stripe. You can cancel or change your plan at any time by contacting Miranda@wildbloomwellnesshouse.com
+        </p>
       </div>
 
       <div className="card" style={{marginBottom:14}}>
