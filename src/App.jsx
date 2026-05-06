@@ -633,7 +633,7 @@ function SuperAdminApp({ user, onLogout }) {
                       <div style={{marginBottom:4}}>
                         <div style={{fontSize:10,fontWeight:700,color:"var(--faint)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:6}}>Tier 1</div>
                         <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)",marginBottom:2}}>Insight</div>
-                        <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginBottom:6}}>$6 – $12 / employee / month</div>
+                        <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginBottom:6}}>$8 / employee / month</div>
                         <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,marginBottom:14,fontStyle:"italic"}}>Understand Burnout Before It Shows Up</div>
                       </div>
                       <div style={{background:"var(--surface2)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies who want visibility into workforce risk</div>
@@ -655,7 +655,7 @@ function SuperAdminApp({ user, onLogout }) {
                       <div style={{marginBottom:4}}>
                         <div style={{fontSize:10,fontWeight:700,color:"var(--amber)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:6}}>Tier 2</div>
                         <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)",marginBottom:2}}>Optimize</div>
-                        <div style={{fontSize:12,color:"var(--amber)",fontWeight:600,marginBottom:6}}>$15 – $25 / employee / month</div>
+                        <div style={{fontSize:12,color:"var(--amber)",fontWeight:600,marginBottom:6}}>$22 / employee / month</div>
                         <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,marginBottom:14,fontStyle:"italic"}}>Turn Insight Into Performance</div>
                       </div>
                       <div style={{background:"var(--wlight)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies ready to improve output and team stability</div>
@@ -678,7 +678,7 @@ function SuperAdminApp({ user, onLogout }) {
                       <div style={{marginBottom:4}}>
                         <div style={{fontSize:10,fontWeight:700,color:"var(--accent)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:6}}>Tier 3</div>
                         <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"var(--ink)",marginBottom:2}}>Transform</div>
-                        <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginBottom:6}}>$35 – $75 / employee / month</div>
+                        <div style={{fontSize:12,color:"var(--accent)",fontWeight:600,marginBottom:6}}>$44 / employee / month</div>
                         <div style={{fontSize:12,color:"var(--soft)",fontWeight:300,lineHeight:1.5,marginBottom:14,fontStyle:"italic"}}>Full Workforce Transformation</div>
                       </div>
                       <div style={{background:"var(--alight)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies serious about retention and long-term performance</div>
