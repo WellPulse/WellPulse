@@ -23,6 +23,7 @@ const STRESS_TOOLS = [
   { id:3, title:"5-4-3-2-1 Grounding", category:"Mindfulness · Immediate", duration:"3 minutes", type:"guide", desc:"A sensory awareness technique that interrupts anxious thought loops by anchoring attention to the present moment.", steps:["Name 5 things you can see.","Name 4 things you can physically feel.","Name 3 things you can hear.","Name 2 things you can smell.","Name 1 thing you can taste."], benefit:"Interrupts the default mode network — the brain region responsible for rumination and worry." },
   { id:4, title:"Progressive Muscle Release", category:"Body · Immediate", duration:"5 minutes", type:"guide", desc:"Systematically tense and release muscle groups to discharge stored physical tension from stress.", steps:["Start with your feet — tense tightly for 5 seconds.","Release and notice the relaxation for 10 seconds.","Move up: calves, thighs, abdomen, hands, arms, shoulders, face.","End with a full-body release and 3 slow breaths."], benefit:"Reduces cortisol stored in muscle tissue and lowers resting heart rate." },
   { id:5, title:"Cold Water Reset", category:"Body · Immediate", duration:"2 minutes", type:"guide", desc:"Splashing cold water on your face triggers the mammalian dive reflex, instantly calming your heart rate and nervous system.", steps:["Go to a sink and run cold water.","Splash your face 5 to 10 times.","Hold a wet cloth over your eyes and forehead for 30 seconds.","Breathe slowly throughout."], benefit:"Activates the mammalian dive reflex, reducing heart rate by up to 25% within seconds." },
+  { id:21, title:"Your Brain Under Chronic Stress", category:"Neuroscience · Awareness", duration:"5 minutes", type:"guide", desc:"The science you need to understand why stress regulation is not optional — it is neurological maintenance. Chronic stress physically shrinks the grey matter in your prefrontal cortex — the part of your brain in charge of decision-making, behavioral regulation, and emotional control.", steps:["Understand what is at stake: The prefrontal cortex is the brain region responsible for your best qualities at work — sound judgment, emotional regulation, clear thinking, and empathy. Chronic stress measurably shrinks the grey matter in this region.","Recognize the signs of prefrontal cortex impairment: You make decisions you later regret. Small things feel overwhelming. You react instead of respond. Your creativity disappears. Your patience shortens. These are not personality failings — they are neurological symptoms.","Understand the timeline: Research shows that even moderate chronic stress impairs prefrontal cortex function within weeks. Sustained high stress leads to measurable structural changes. The amygdala — your threat brain — simultaneously becomes more reactive, amplifying fear and reactivity.","The good news — neuroplasticity: The brain can recover. With consistent stress regulation, social connection, adequate sleep, and reduced threat load, grey matter is restored. This is not metaphor. It is measurable on an MRI.","Your action: Every regulation practice in this library is, at the neurological level, a maintenance practice for your prefrontal cortex. The breathwork, the grounding, the Stop-Breathe-Reflect-Choose practice — all of them directly counter the shrinkage process and support recovery.","Your WellPulse check-in score is, in effect, a signal of where your brain is on this spectrum. A score below 5 is a warning that prefrontal cortex function may already be compromised. Act on it."], benefit:"Research by neuroscientist Amy Arnsten at Yale confirms that chronic stress causes structural changes to the prefrontal cortex — reduced grey matter, impaired function, and increased amygdala reactivity. The same research confirms these changes are reversible with consistent regulation practices. This is the scientific case for everything WellPulse does." },
   { id:6, title:"Cognitive Defusion", category:"Mental Reframe · Immediate", duration:"3 minutes", type:"guide", desc:"A technique from Acceptance and Commitment Therapy. Create distance between yourself and your stressful thoughts.", steps:["Notice a stressful thought you are having.","Instead of 'I am overwhelmed', say 'I am having the thought that I am overwhelmed.'","Then say 'I notice I am having the thought that I am overwhelmed.'","Observe the thought without engaging with it.","Let it pass like a cloud."], benefit:"Reduces emotional reactivity by engaging the prefrontal cortex over the amygdala." },
   { id:7, title:"90-Minute Micro-Recovery", category:"Daily Practice · Preventative", duration:"5 minutes", type:"guide", desc:"Research shows that taking a 5-minute restorative break every 90 minutes prevents the accumulation of stress hormones and sustains cognitive performance across the full workday.", steps:["Set a repeating timer for every 90 minutes.","When it goes off, step fully away from your screen.","Choose one: walk, stretch, breathe, or simply sit in silence.","Do not check your phone during this time.","Return to work only after the 5 minutes are complete."], benefit:"Aligns with the brain's ultradian rhythm cycle — the 90-minute rest-activity pattern hardwired into human biology. Skipping recovery phases degrades focus by up to 40%." },
   { id:8, title:"End-of-Day Shutdown Ritual", category:"Daily Practice · Preventative", duration:"5 minutes", type:"guide", desc:"A structured transition from work mode to personal time. Without a clear closing ritual, the brain continues processing work stress for hours after you stop working.", steps:["At the end of your workday, write down your three most important tasks for tomorrow.","Review anything unfinished and note where it stands — not to solve it, but to release it.","Close all work tabs and applications.","Say aloud or write: 'My workday is complete.'","Do one physical action that signals the transition: change clothes, go outside, make tea."], benefit:"Activates cognitive closure — reducing the Zeigarnik effect, where incomplete tasks continue occupying mental bandwidth involuntarily." },
@@ -56,6 +57,7 @@ const NEURO_TOOLS = [
   { id:13, title:"Stop · Breathe · Reflect · Choose — Team Version", category:"Leadership Practice · Anytime", duration:"2 minutes", type:"guide", desc:"Teach your team this four-step practice and use it together. The goal is collective awareness — are we responding from healthy or unhealthy stress right now? Leaders who model this create permission for the whole team to regulate.", steps:["STOP — Call a pause. Say: 'Before we continue, let's take two minutes.' Your willingness to stop models that regulation is valued here.","BREATHE — Lead one breath together. Inhale 4 counts, hold 2, exhale 6. This co-regulates the group's nervous systems simultaneously.","REFLECT — Ask the room: 'Are we in a healthy or unhealthy stress response right now?' Healthy: challenged, focused, engaged. Unhealthy: reactive, overwhelmed, disconnected.","CHOOSE — From this awareness, invite the team to choose how to proceed intentionally. Better decisions come from regulated states.","Use before difficult conversations, performance reviews, conflict moments, or high-stakes decisions."], benefit:"A leader who models regulation gives the whole room permission to regulate. This is called co-regulation — the neurological phenomenon where one calm nervous system helps others regulate. It is one of the most powerful leadership tools available." },
   { id:14, title:"The Wellness Framework — For Leaders", category:"Leadership · Foundation", duration:"15 minutes", type:"guide", desc:"Understanding the four-stage wellness framework helps leaders support their teams at every level — from early awareness to long-term resilience. This is the model that underlies everything in WellPulse.", steps:["STAGE 1 — AWARENESS: Your team's WellPulse data is stage one. It makes invisible stress visible. Review it weekly. Share relevant trends with your team openly — transparency reduces anxiety.","STAGE 2 — REGULATION: Make regulation tools accessible and normalized. Share practices from the Stress Management library in team meetings. Model them yourself. A leader who breathes publicly gives everyone permission to breathe.","STAGE 3 — RESILIENCE BUILDING: Schedule group coaching sessions focused on resilience skills. Use Wild Bloom's team workshops to build capacity across departments. Celebrate teams that recover well from difficulty — not just teams that avoid it.","STAGE 4 — MAINTENANCE: Sustain what works. Protect recovery time. Build non-negotiable wellness practices into team culture — weekly check-ins, monthly coaching, quarterly retrospectives. Use WellPulse data to confirm what's working.","Ask yourself: Which stage is my team in right now?"], benefit:"Leaders who understand and actively support all four stages of the wellness framework see the highest retention rates, the lowest burnout incidence, and the strongest team performance over time. This is not a wellness initiative — it is a performance strategy." },
   { id:16, title:"Positive Psychology for Team Leaders", category:"Leadership · Foundation", duration:"10 minutes", type:"guide", desc:"Positive psychology shifts the question from 'what is wrong with this team?' to 'what enables this team to thrive?' Research by Martin Seligman shows that wellbeing has five measurable elements — all of which leaders can actively cultivate.", steps:["The PERMA model: Positive Emotions, Engagement, Relationships, Meaning, Accomplishment.","POSITIVE EMOTIONS — Create small moments of warmth, humor, and celebration in team culture. These are not trivial. They build the emotional reserves teams draw on under stress.","ENGAGEMENT — Give people work that uses their strengths. When people are in flow — challenged but capable — they are deeply engaged and highly resilient.","RELATIONSHIPS — Invest in social connection deliberately. One genuine human moment per week per team member makes a measurable difference.","MEANING — Help your team connect their work to its impact. Share stories of who the work serves. Make the purpose visible.","ACCOMPLISHMENT — Celebrate progress, not just outcomes. Teams that acknowledge small wins consistently outperform teams that only celebrate big ones.","Review your team: Which PERMA element is strongest? Which needs attention?"], benefit:"Teams led with a positive psychology framework show 31% higher productivity, 37% higher sales performance, and 3x more creativity than those led without it according to research by Shawn Achor. Positive leadership is not soft — it is one of the highest-leverage performance strategies available." },
+  { id:18, title:"The Grey Matter Conversation — For Leaders", category:"Neuroscience · Leadership", duration:"10 minutes", type:"guide", desc:"The single most compelling scientific argument for why workplace wellness is a business imperative — not a perk. Share this with your leadership team.", steps:["Start with the science: Chronic stress — defined as sustained high-pressure conditions over weeks or months — physically shrinks the grey matter in the prefrontal cortex. This is the brain region responsible for decision-making, behavioral regulation, emotional control, planning, and empathy.","Connect it to performance: When the prefrontal cortex is compromised, employees do not just feel worse. They functionally become less capable of the things organizations need most: sound judgment, emotional regulation, creative problem-solving, and effective communication. Poor decisions, reactive behavior, and interpersonal conflict are neurological symptoms — not character flaws.","Connect it to your data: Your WellPulse scores are, in effect, a real-time neurological signal. Departments scoring below 5 are operating in the chronic stress zone where prefrontal cortex impairment is likely already occurring. This is not a wellness concern. It is a performance and liability concern.","Present the business case: Compromised prefrontal cortex function costs organizations in poor decisions, increased conflict, higher turnover, and reduced innovation — all of which are measurable in financial terms. The cost of stress regulation support is a fraction of the cost of the damage it prevents.","Present the recovery case: The brain is neuroplastic. With consistent regulation practices, social connection, adequate sleep, and reduced threat load, grey matter recovers. Function returns. This recovery is measurable and achievable — but it requires intentional organizational support.","Your role as a leader: The prefrontal cortex of every person on your team is either being protected or eroded by the environment you create. Culture, workload, psychological safety, and recognition are not soft factors. They are neurological inputs with measurable outputs."], benefit:"This framework, grounded in the research of Dr. Amy Arnsten at Yale and supported by decades of occupational neuroscience, reframes workplace wellness from a discretionary benefit into a core business and human responsibility. Leaders who understand this lead differently." },
   { id:17, title:"Strengths-Based Team Culture", category:"Leadership · Ongoing", duration:"Ongoing", type:"guide", desc:"The highest-performing teams in Gallup's global research have one thing in common — every member knows their strengths and has the opportunity to use them daily. Building a strengths-based culture is one of the most impactful things a leader can do.", steps:["Start with yourself: What are your top three leadership strengths? Ask your team what they observe.","In your next 1-on-1 with each team member, ask: 'When do you feel most energized at work? What tasks feel natural to you?'","Listen for patterns. These are their strengths.","In the following weeks, look for opportunities to assign work that activates those strengths — even in small ways.","In team meetings, explicitly acknowledge when someone used a strength well: 'That presentation showed your real talent for clarity.'","Over time, build a team map — who brings what strengths. Assign cross-functional work that allows different strengths to complement each other."], benefit:"Gallup research across millions of employees shows that people who use their strengths daily are 6x more likely to be engaged at work and 3x less likely to experience burnout. Strengths-based management is not about ignoring weaknesses — it is about ensuring people spend enough time in their strength zone to sustain engagement and resilience." },
   { id:15, title:"Social Ties as a Team Health Strategy", category:"Team Culture · Ongoing", duration:"Ongoing", type:"guide", desc:"The research on social connection at work is unambiguous — strong social ties are one of the most powerful buffers against burnout and one of the strongest predictors of team performance. Leaders can deliberately build them.", steps:["Audit your current team culture: Do people know each other as humans, or only as colleagues?","Build micro-moments of genuine connection into every week — not just team-building events. Small daily moments of warmth matter more than quarterly retreats.","In every 1-on-1, ask one question that isn't about work: 'How are you doing outside of work?' Then actually listen.","Recognize and celebrate relationships, not just output. Publicly acknowledge when team members support each other.","When scores drop in the Relationships category on WellPulse, treat it as a signal that social connection needs attention — not that people aren't performing.","Facilitate one connection practice per week from the Team Practices library. Affirmation Round, Two Truths and A Growth, and Appreciation Pause are the highest impact options."], benefit:"Employees with strong workplace relationships are 50% less likely to experience clinical burnout. Oxytocin released during genuine social connection directly counteracts cortisol. Social ties are not a perk — they are a physiological necessity for sustainable performance." },
 ];
@@ -270,12 +272,98 @@ body{background:var(--bg);font-family:'DM Sans',system-ui,sans-serif;color:var(-
 .empty-s{font-size:13px;color:var(--faint);font-weight:300;line-height:1.6;}
 
 @media(max-width:880px){
-  .auth-l{display:none;}.auth-r{width:100%;padding:40px 28px;}
-  .kgrid{grid-template-columns:1fr 1fr;}
-  .g2,.g3{grid-template-columns:1fr;}
+  /* AUTH */
+  .auth-l{display:none;}
+  .auth-r{width:100%;padding:32px 24px;}
+  .auth-card{width:100%;}
+  .auth-title{font-size:22px;}
+
+  /* NAV */
+  .nav{padding:0 16px;height:48px;}
+  .nav-logo{font-size:18px;}
+  .nav-ctx{display:none;}
+  .nav-code{display:none;}
+  .nav-nm{display:none;}
+  .nav-sep{display:none;}
+
+  /* LAYOUT */
+  .layout{flex-direction:column;}
   .sb{display:none;}
-  .main{padding:18px;}
+  .content{width:100%;overflow-x:hidden;}
+
+  /* MAIN */
+  .main{padding:16px 14px;}
+  .ph{margin-bottom:16px;padding-bottom:14px;}
+  .ph-title{font-size:20px;}
+  .ph-sub{font-size:12px;}
+
+  /* KPI GRID */
+  .kgrid{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .kpi{padding:14px;}
+  .kpi-v{font-size:28px;}
+
+  /* GRIDS */
+  .g2,.g3{grid-template-columns:1fr;}
+
+  /* TABLES */
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tbl{min-width:500px;}
+  .tbl th,.tbl td{padding:8px 10px;font-size:12px;}
+
+  /* CHECKIN */
+  .ci-wrap{padding:16px 12px;}
+  .ci-card{padding:24px 20px;border-radius:12px;}
+  .ci-title{font-size:20px;}
+  .ci-q{font-size:16px;}
+  .ci-sc{font-size:32px;}
+
+  /* TOOLS */
+  .tgrid{grid-template-columns:1fr;}
+  .tc{padding:16px;}
+
+  /* MODAL */
+  .modal-bg{padding:12px;}
+  .modal{padding:24px 20px;max-height:85vh;}
+  .m-title{font-size:18px;}
+
+  /* CARDS */
+  .card{padding:16px;}
+
+  /* BOTTOM NAV — show on mobile */
+  .mobile-nav{display:flex !important;}
 }
+
+/* MOBILE BOTTOM NAVIGATION */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  z-index:200;
+  padding:0;
+  box-shadow:0 -2px 12px rgba(44,36,22,.08);
+}
+.mobile-nav-item{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:8px 4px 10px;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:var(--faint);
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  font-weight:500;
+  gap:4px;
+  transition:color .15s;
+}
+.mobile-nav-item.on{color:var(--accent);}
+.mobile-nav-item svg{width:20px;height:20px;}
+.mobile-content-pad{padding-bottom:70px;}
 `;
 
 const el = document.createElement("style");
@@ -1399,6 +1487,34 @@ function DashPage({ checkins, user }) {
         </div>
       </div>
 
+      {/* DATA RELIABILITY WARNING */}
+      {checkins.length > 0 && participationRate !== null && participationRate < 40 && (
+        <div style={{background:"var(--dlight)",border:"1px solid #E8B4A0",borderRadius:"var(--r)",padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"flex-start",gap:12}}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A0522D" strokeWidth="2" strokeLinecap="round" style={{flexShrink:0,marginTop:1}}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--danger)",marginBottom:3}}>Low Participation — Data May Not Be Reliable</div>
+            <div style={{fontSize:12,color:"var(--danger)",fontWeight:300,lineHeight:1.6}}>Only <strong>{participationRate}%</strong> of your team completed a check-in this week ({tw.length} of {teamSize} employees). Scores based on fewer than 40% participation may not accurately represent your team's wellness. Consider sending a reminder to encourage more responses before acting on this data.</div>
+          </div>
+        </div>
+      )}
+
+      {checkins.length > 0 && participationRate !== null && participationRate >= 40 && participationRate < 60 && (
+        <div style={{background:"var(--wlight)",border:"1px solid #E8D5B7",borderRadius:"var(--r)",padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"flex-start",gap:12}}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B6F47" strokeWidth="2" strokeLinecap="round" style={{flexShrink:0,marginTop:1}}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--amber)",marginBottom:3}}>Moderate Participation — Use Data With Caution</div>
+            <div style={{fontSize:12,color:"var(--amber)",fontWeight:300,lineHeight:1.6}}><strong>{participationRate}%</strong> of your team responded this week ({tw.length} of {teamSize} employees). Data is directionally useful but not fully representative. A participation rate above 60% gives you more confidence in the scores.</div>
+          </div>
+        </div>
+      )}
+
+      {checkins.length > 0 && participationRate !== null && participationRate >= 60 && (
+        <div style={{background:"var(--alight)",border:"1px solid rgba(92,122,92,0.3)",borderRadius:"var(--r)",padding:"10px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <div style={{fontSize:12,color:"var(--accent)",fontWeight:400}}><strong>{participationRate}%</strong> participation this week — data is reliable and representative of your team.</div>
+        </div>
+      )}
+
       {/* TEAM SIZE INPUT */}
       {!teamSize && checkins.length > 0 && (
         <div style={{background:"var(--wlight)",border:"1px solid #E8D5B7",borderRadius:"var(--r)",padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
@@ -1952,6 +2068,8 @@ function ResourcesPage() {
     { id:4, cat:"Culture", title:"Building Psychological Safety in Your Team", desc:"Based on Google's Project Aristotle — the research-backed practices that make teams perform at their highest level.", content:"Google's five-year study on team performance found that psychological safety — the belief that you can speak up without fear of humiliation or punishment — was the single most important factor in team effectiveness. More than talent, more than tools, more than strategy. Building it requires four consistent behaviors from leaders: (1) Model vulnerability — share your own uncertainties and mistakes openly. (2) Respond to bad news with curiosity, not blame. (3) Actively invite dissenting opinions in meetings. (4) Follow through on what you say you'll do. Psychological safety is not about being nice. It's about creating an environment where truth-telling is safe — and that starts with the leader." },
     { id:5, cat:"Research", title:"The Neuroscience of Stress at Work", desc:"What actually happens in the brain under chronic workplace stress — and why traditional approaches to wellness miss the point.", content:"Chronic workplace stress does not feel like acute stress. It doesn't spike and resolve. It accumulates at a level below conscious awareness, gradually raising baseline cortisol, narrowing cognitive bandwidth, and increasing amygdala reactivity. The result is a workforce that is technically functioning but operating at a fraction of their cognitive and creative capacity. The prefrontal cortex — responsible for complex decision-making, empathy, and strategic thinking — is the first casualty of chronic stress. This is why burned-out teams make poor decisions, communicate badly, and lose creativity — long before they stop showing up. The implication for leaders is clear: investing in nervous system regulation is not a wellness perk. It is a performance strategy." },
     { id:6, cat:"Leadership", title:"The 90-Day Retention Reset", desc:"A structured leadership program for stabilizing a team experiencing high turnover or collective burnout.", content:"When a team enters a collective burnout cycle, the instinct is to address the individuals who are struggling. This is insufficient. The environment that created the burnout is still intact. A 90-day retention reset requires three parallel tracks: (1) Structural — audit workload, eliminate low-value work, protect recovery time. (2) Relational — increase the frequency and quality of 1-on-1 conversations. Reduce performance language. Increase human language. (3) Cultural — implement one team ritual per week that builds psychological safety and recognition. At 30, 60, and 90 days, measure using WellPulse data whether scores are trending upward. If not, escalate to coaching support." },
+    { id:7, cat:"Neuroscience", title:"What Chronic Stress Does to Your Brain", desc:"The science behind why chronic workplace stress is not just an emotional experience — it is a measurable, physical change to your brain's structure and function.", content:"This is the finding that changes how people think about workplace stress. Chronic stress — the kind that accumulates over months of overwork, conflict, and uncertainty — physically shrinks the grey matter in the prefrontal cortex. The prefrontal cortex is the region of the brain responsible for decision-making, behavioral regulation, emotional control, planning, and empathy. It is, in the most literal sense, what makes us our best selves at work. When it is compromised by chronic stress, people do not simply feel worse. They functionally become less capable of the things we most need at work: sound judgment, emotional regulation, clear communication, and creative problem-solving. The research, led by neuroscientist Amy Arnsten at Yale, shows that even moderate chronic stress can impair prefrontal cortex function within weeks — and that sustained high stress leads to measurable structural changes over time. The amygdala — the brain's threat-detection center — simultaneously becomes more reactive, creating a neurological state where people are more fearful, more reactive, and less capable of the higher-order thinking their roles demand. The good news is equally significant: the brain is neuroplastic. With consistent stress regulation practices, social connection, adequate sleep, and reduced threat load, the prefrontal cortex can recover. Grey matter can be restored. Function returns. This is not metaphor — it is measurable on an MRI. This is why WellPulse exists. Not to make people feel better in the moment. But to catch the conditions that lead to this kind of damage before they take hold — and to give people and organizations the tools to reverse it." },
+    { id:8, cat:"Neuroscience", title:"The Stress-Performance Curve — Where Are You?", desc:"Not all stress is harmful. Understanding the relationship between stress and performance helps leaders and employees optimize their zone — and recognize when they've crossed the line.", content:"The Yerkes-Dodson curve is one of the most important and least-known models in workplace performance. It shows that performance improves with stress — up to a point. In the low-stress zone, people are understimulated, disengaged, and underperforming. In the optimal zone — what psychologists call eustress — people are challenged, focused, energized, and performing at their peak. This is healthy stress. It sharpens the prefrontal cortex rather than shrinking it. But past that peak, the curve drops steeply. In the high-stress zone — distress — performance collapses. Decision quality deteriorates. Creativity disappears. Relationships fracture. And if the high-stress state persists, the neurological damage described in the grey matter research begins to accumulate. The practical implication for leaders: your goal is not to eliminate stress from your team's experience. That would also eliminate performance. Your goal is to keep people in the optimal zone — challenged and supported — and to recognize the early signals when they are crossing into the distress zone. WellPulse check-in data is, in effect, a real-time map of where your departments sit on that curve. A score of 7-10 suggests the optimal zone. A score of 5-6 is a warning. A score below 5 is the distress zone — where prefrontal cortex impairment is already beginning, and intervention is needed." },
   ];
 
   return (
@@ -2176,7 +2294,7 @@ function EmployeeApp({ user, onLogout }) {
             </div>
           ))}
         </div>
-        <div className="content">
+        <div className="content mobile-content-pad">
           {page==="checkin" && <CheckInPage user={user}/>}
           {page==="stress" && <ToolkitPage tools={STRESS_TOOLS} title="Stress Management" subtitle="Evidence-based techniques to regulate your nervous system"/>}
           {page==="neuro" && <ToolkitPage tools={NEURO_TOOLS} title="Team Practices" subtitle="Neurological practices to implement in meetings and team settings"/>}
@@ -2185,6 +2303,14 @@ function EmployeeApp({ user, onLogout }) {
         </div>
       </div>
     </div>
+    <nav className="mobile-nav">
+      {nav.slice(0,5).map(item=>(
+        <button key={item.id} className={`mobile-nav-item ${page===item.id?"on":""}`} onClick={()=>setPage(item.id)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+          {item.label.split(' ')[0]}
+        </button>
+      ))}
+    </nav>
   );
 }
 
