@@ -2087,14 +2087,17 @@ function CheckInPage({ user }) {
   }
 
   async function requestSupport() {
-    // Save to Supabase
-    await supabase.from("support_requests").insert({
-      company_code: user.company_code || "",
-      department: user.department,
-      week: cw,
-      wellness_score: score,
-      status: "pending"
-    });
+    try {
+      const { data, error } = await supabase.from("support_requests").insert({
+        company_code: user.company_code || "",
+        department: user.department || "",
+        week: cw,
+        wellness_score: score,
+        status: "pending"
+      }).select();
+      if (error) console.error("Supabase support_requests error:", error);
+      else console.log("Supabase insert success:", data);
+    } catch(e) { console.error("Supabase insert failed:", e); }
     // Send email notification
     try {
       await fetch("https://formspree.io/f/xkoybvjo", {
@@ -2247,15 +2250,18 @@ function SupportPage({ user }) {
 
   async function requestSupport() {
     setSubmitting(true);
-    // Save to Supabase
-    await supabase.from("support_requests").insert({
-      company_code: user.company_code || "",
-      department: user.department,
-      week: getWeekLabel(),
-      wellness_score: null,
-      status: "pending",
-      notes: note || null
-    });
+    try {
+      const { data, error } = await supabase.from("support_requests").insert({
+        company_code: user.company_code || "",
+        department: user.department || "",
+        week: getWeekLabel(),
+        wellness_score: null,
+        status: "pending",
+        notes: note || null
+      }).select();
+      if (error) console.error("Supabase support_requests error:", error);
+      else console.log("Supabase insert success:", data);
+    } catch(e) { console.error("Supabase insert failed:", e); }
     // Send email
     try {
       await fetch("https://formspree.io/f/xkoybvjo", {
