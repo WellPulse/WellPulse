@@ -934,7 +934,7 @@ function LandingPage({ onSignIn }) {
     if (!formData.firstName || !formData.email || !formData.company) { alert("Please fill in your name, email, and company."); return; }
     setSending(true);
     try {
-      await fetch("https://formspree.io/f/mpqbrppl", { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({ first_name:formData.firstName, last_name:formData.lastName, email:formData.email, company:formData.company, team_size:formData.teamSize, role:formData.role, challenge:formData.challenge, _subject:`Demo Request — ${formData.company}` }) });
+      await fetch("https://formspree.io/f/mjglaryd", { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({ first_name:formData.firstName, last_name:formData.lastName, email:formData.email, company:formData.company, team_size:formData.teamSize, role:formData.role, challenge:formData.challenge, _subject:`Demo Request — ${formData.company}`, _replyto: formData.email }) });
     } catch(e) {}
     setSending(false); setSubmitted(true);
   }
