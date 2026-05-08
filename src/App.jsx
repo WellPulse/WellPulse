@@ -2273,44 +2273,46 @@ function EmployeeApp({ user, onLogout }) {
     ...(tier === "support" ? [{ id:"getsupport", label:"Get Support", d:<><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></> }] : []),
   ];
   return (
-    <div className="app">
-      <nav className="nav">
-        <div className="nav-logo">WellPulse</div>
-        <div className="nav-sep"/>
-        <div className="nav-ctx">Employee Portal</div>
-        <div className="nav-r">
-          <div className="nav-av">{user.name?.[0]?.toUpperCase()}</div>
-          <div className="nav-nm">{user.name} · {user.department}</div>
-          <button className="btn-nav" onClick={onLogout}>Sign out</button>
-        </div>
-      </nav>
-      <div className="layout">
-        <div className="sb">
-          <div className="sb-sec">Wellness</div>
-          {nav.map(item=>(
-            <div key={item.id} className={`sb-item ${page===item.id?"on":""}`} onClick={()=>setPage(item.id)}>
-              <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
-              {item.label}
-            </div>
-          ))}
-        </div>
-        <div className="content mobile-content-pad">
-          {page==="checkin" && <CheckInPage user={user}/>}
-          {page==="stress" && <ToolkitPage tools={STRESS_TOOLS} title="Stress Management" subtitle="Evidence-based techniques to regulate your nervous system"/>}
-          {page==="neuro" && <ToolkitPage tools={NEURO_TOOLS} title="Team Practices" subtitle="Neurological practices to implement in meetings and team settings"/>}
-          {page==="history" && <HistoryPage user={user}/>}
-          {page==="getsupport" && <SupportPage user={user}/>}
+    <>
+      <div className="app">
+        <nav className="nav">
+          <div className="nav-logo">WellPulse</div>
+          <div className="nav-sep"/>
+          <div className="nav-ctx">Employee Portal</div>
+          <div className="nav-r">
+            <div className="nav-av">{user.name?.[0]?.toUpperCase()}</div>
+            <div className="nav-nm">{user.name} · {user.department}</div>
+            <button className="btn-nav" onClick={onLogout}>Sign out</button>
+          </div>
+        </nav>
+        <div className="layout">
+          <div className="sb">
+            <div className="sb-sec">Wellness</div>
+            {nav.map(item=>(
+              <div key={item.id} className={`sb-item ${page===item.id?"on":""}`} onClick={()=>setPage(item.id)}>
+                <svg className="sb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+                {item.label}
+              </div>
+            ))}
+          </div>
+          <div className="content mobile-content-pad">
+            {page==="checkin" && <CheckInPage user={user}/>}
+            {page==="stress" && <ToolkitPage tools={STRESS_TOOLS} title="Stress Management" subtitle="Evidence-based techniques to regulate your nervous system"/>}
+            {page==="neuro" && <ToolkitPage tools={NEURO_TOOLS} title="Team Practices" subtitle="Neurological practices to implement in meetings and team settings"/>}
+            {page==="history" && <HistoryPage user={user}/>}
+            {page==="getsupport" && <SupportPage user={user}/>}
+          </div>
         </div>
       </div>
-    </div>
-    <nav className="mobile-nav">
-      {nav.slice(0,5).map(item=>(
-        <button key={item.id} className={`mobile-nav-item ${page===item.id?"on":""}`} onClick={()=>setPage(item.id)}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
-          {item.label.split(' ')[0]}
-        </button>
-      ))}
-    </nav>
+      <nav className="mobile-nav">
+        {nav.slice(0,5).map(item=>(
+          <button key={item.id} className={`mobile-nav-item ${page===item.id?"on":""}`} onClick={()=>setPage(item.id)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{item.d}</svg>
+            {item.label.split(' ')[0]}
+          </button>
+        ))}
+      </nav>
+    </>
   );
 }
 
