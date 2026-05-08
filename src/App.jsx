@@ -943,39 +943,40 @@ function LandingPage({ onSignIn }) {
     <div style={{fontFamily:"'DM Sans',sans-serif",background:"#F5F0EA",minHeight:"100vh",color:"#1E1A14"}}>
 
       {/* NAV */}
-      <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,padding:"16px 48px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(245,240,234,0.96)",backdropFilter:"blur(12px)",borderBottom:"1px solid #E2D9CE"}}>
-        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:22,color:"#1E1A14"}}>WellPulse<span style={{display:"inline-block",width:7,height:7,borderRadius:"50%",background:"#4A6741",marginLeft:3,verticalAlign:"middle",marginBottom:4}}/></div>
-        <div style={{display:"flex",gap:28,alignItems:"center"}}>
-          <a href="#how" style={{fontSize:14,color:"#6B5D4F",textDecoration:"none"}}>How It Works</a>
-          <a href="#coaching" style={{fontSize:14,color:"#6B5D4F",textDecoration:"none"}}>Coaching</a>
-          <a href="#who" style={{fontSize:14,color:"#6B5D4F",textDecoration:"none"}}>Who It's For</a>
-          <button onClick={onSignIn} style={{padding:"8px 20px",background:"#1E1A14",color:"#fff",border:"none",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,cursor:"pointer"}}>Sign In</button>
+      <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,padding:"14px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(245,240,234,0.96)",backdropFilter:"blur(12px)",borderBottom:"1px solid #E2D9CE"}}>
+        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:20,color:"#1E1A14",flexShrink:0}}>WellPulse<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:"#4A6741",marginLeft:3,verticalAlign:"middle",marginBottom:3}}/></div>
+        <div style={{display:"flex",gap:12,alignItems:"center"}}>
+          <a href="#how" style={{fontSize:13,color:"#6B5D4F",textDecoration:"none",whiteSpace:"nowrap",display:"none"}} className="nav-desktop">How It Works</a>
+          <a href="#coaching" style={{fontSize:13,color:"#6B5D4F",textDecoration:"none",whiteSpace:"nowrap",display:"none"}} className="nav-desktop">Coaching</a>
+          <a href="#who" style={{fontSize:13,color:"#6B5D4F",textDecoration:"none",whiteSpace:"nowrap",display:"none"}} className="nav-desktop">Who It's For</a>
+          <button onClick={onSignIn} style={{padding:"8px 18px",background:"#1E1A14",color:"#fff",border:"none",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Sign In</button>
         </div>
       </nav>
+      <style>{`@media(min-width:600px){.nav-desktop{display:block !important;}} @media(max-width:599px){.lp-mockup{display:none !important;} .lp-hero{grid-template-columns:1fr !important;padding:100px 24px 60px !important;} .lp-stats{grid-template-columns:1fr 1fr !important;} .lp-stat{border-right:none !important;border-bottom:1px solid rgba(255,255,255,0.07);} .lp-how{padding:60px 24px !important;} .lp-how-grid{grid-template-columns:1fr !important; gap:32px !important;} .lp-who{padding:60px 24px !important;} .lp-burnout-grid{grid-template-columns:1fr 1fr !important;} .lp-roles{grid-template-columns:1fr !important;} .lp-coaching{padding:60px 24px !important;} .lp-coaching-grid{grid-template-columns:1fr !important; gap:40px !important;} .lp-quote{padding:48px 24px !important;} .lp-demo{padding:60px 24px !important;} .lp-demo-form{padding:28px 20px !important;} .lp-demo-fields{grid-template-columns:1fr !important;} .lp-footer{padding:40px 24px !important; flex-direction:column !important; gap:20px !important; text-align:center !important;} .lp-footer-links{display:none !important;}}`}</style>
 
       {/* HERO */}
-      <div style={{minHeight:"100vh",background:"#1E1A14",display:"flex",alignItems:"center",padding:"140px 48px 80px",position:"relative",overflow:"hidden"}}>
+      <div style={{minHeight:"100vh",background:"#1E1A14",display:"flex",alignItems:"center",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:-200,right:-200,width:600,height:600,borderRadius:"50%",background:"radial-gradient(circle,rgba(74,103,65,0.2) 0%,transparent 70%)",pointerEvents:"none"}}/>
-        <div style={{maxWidth:1200,margin:"0 auto",width:"100%",display:"grid",gridTemplateColumns:"1fr 1fr",gap:80,alignItems:"center",position:"relative",zIndex:1}}>
+        <div className="lp-hero" style={{maxWidth:1200,margin:"0 auto",width:"100%",display:"grid",gridTemplateColumns:"1fr 1fr",gap:60,alignItems:"center",position:"relative",zIndex:1,padding:"140px 48px 80px"}}>
           <div>
             <div style={{display:"inline-flex",alignItems:"center",gap:8,fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"rgba(253,252,249,0.8)",marginBottom:24,padding:"6px 14px",background:"rgba(255,255,255,0.08)",borderRadius:20,border:"1px solid rgba(255,255,255,0.15)"}}>
               <span style={{width:6,height:6,borderRadius:"50%",background:"#7A9E6E",flexShrink:0}}/>
               Powered by Wild Bloom Wellness House
             </div>
-            <h1 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(40px,5vw,66px)",lineHeight:1.08,color:"#FDFCF9",marginBottom:24}}>Your people are not <em style={{fontStyle:"italic",color:"#7A9E6E"}}>productivity metrics.</em></h1>
-            <p style={{fontSize:17,color:"rgba(253,252,249,0.6)",fontWeight:300,lineHeight:1.75,marginBottom:40,maxWidth:480}}>WellPulse gives leadership teams real-time visibility into workforce wellness — and connects them with certified coaching to act on what the data shows.</p>
-            <div style={{display:"flex",gap:14,alignItems:"center"}}>
-              <a href="#demo" style={{padding:"14px 32px",background:"#FDFCF9",color:"#1E1A14",borderRadius:4,fontSize:15,fontWeight:600,textDecoration:"none"}}>Request a Demo</a>
-              <a href="#how" style={{padding:"14px 28px",background:"transparent",color:"rgba(253,252,249,0.8)",border:"1.5px solid rgba(253,252,249,0.25)",borderRadius:4,fontSize:15,fontWeight:500,textDecoration:"none"}}>How It Works</a>
+            <h1 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(36px,5vw,66px)",lineHeight:1.08,color:"#FDFCF9",marginBottom:24}}>Your people are not <em style={{fontStyle:"italic",color:"#7A9E6E"}}>productivity metrics.</em></h1>
+            <p style={{fontSize:16,color:"rgba(253,252,249,0.6)",fontWeight:300,lineHeight:1.75,marginBottom:36,maxWidth:480}}>WellPulse gives leadership teams real-time visibility into workforce wellness — and connects them with certified coaching to act on what the data shows.</p>
+            <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}>
+              <a href="#demo" style={{padding:"13px 28px",background:"#FDFCF9",color:"#1E1A14",borderRadius:4,fontSize:15,fontWeight:600,textDecoration:"none"}}>Request a Demo</a>
+              <a href="#how" style={{padding:"13px 24px",background:"transparent",color:"rgba(253,252,249,0.8)",border:"1.5px solid rgba(253,252,249,0.25)",borderRadius:4,fontSize:15,fontWeight:500,textDecoration:"none"}}>How It Works</a>
             </div>
-            <div style={{marginTop:40,display:"flex",alignItems:"center",gap:18,fontSize:13,color:"rgba(253,252,249,0.35)",flexWrap:"wrap"}}>
+            <div style={{marginTop:32,display:"flex",alignItems:"center",gap:16,fontSize:12,color:"rgba(253,252,249,0.35)",flexWrap:"wrap"}}>
               <span>Anonymous check-ins</span><span style={{width:3,height:3,borderRadius:"50%",background:"rgba(253,252,249,0.2)"}}/>
               <span>Department-level data</span><span style={{width:3,height:3,borderRadius:"50%",background:"rgba(253,252,249,0.2)"}}/>
               <span>Wild Bloom coaching</span>
             </div>
           </div>
-          {/* Dashboard mockup */}
-          <div style={{background:"#FDFCF9",border:"1px solid #E2D9CE",borderRadius:12,overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,0.4)"}}>
+          {/* Dashboard mockup — hidden on mobile */}
+          <div className="lp-mockup" style={{background:"#FDFCF9",border:"1px solid #E2D9CE",borderRadius:12,overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,0.4)"}}>
             <div style={{background:"#1E1A14",padding:"12px 18px",display:"flex",alignItems:"center",gap:8}}>
               <div style={{display:"flex",gap:5}}>{[1,2,3].map(i=><div key={i} style={{width:9,height:9,borderRadius:"50%",background:"rgba(255,255,255,0.15)"}}/>)}</div>
               <span style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginLeft:6}}>WellPulse · Leadership Portal</span>
@@ -1004,56 +1005,55 @@ function LandingPage({ onSignIn }) {
       </div>
 
       {/* STATS BAR */}
-      <div style={{background:"#1E1A14",padding:"60px 48px"}}>
-        <div style={{maxWidth:1200,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(4,1fr)"}}>
-          {[["$1T","Lost annually to workplace stress globally"],["68%","Of employees are disengaged at work right now — Gallup"],["15%","Of global GDP lost to presenteeism from poor mental health — WHO"],["2min","To complete a WellPulse check-in"]].map(([n,l])=>(
-            <div key={n} style={{textAlign:"center",padding:20,borderRight:"1px solid rgba(255,255,255,0.07)"}}>
-              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:44,color:"#C4956A",lineHeight:1,marginBottom:8}}>{n}</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.45)",fontWeight:300,lineHeight:1.5}}>{l}</div>
+      <div style={{background:"#1E1A14",padding:"48px 24px"}}>
+        <div className="lp-stats" style={{maxWidth:1200,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(4,1fr)"}}>
+          {[["$1T","Lost annually to workplace stress globally"],["68%","Of employees are disengaged at work right now — Gallup"],["15%","Of global GDP lost to presenteeism from poor mental health — WHO"],["2min","To complete a WellPulse check-in"]].map(([n,l],i)=>(
+            <div className="lp-stat" key={n} style={{textAlign:"center",padding:"20px 16px",borderRight:"1px solid rgba(255,255,255,0.07)"}}>
+              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(32px,4vw,44px)",color:"#C4956A",lineHeight:1,marginBottom:8}}>{n}</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.45)",fontWeight:300,lineHeight:1.5}}>{l}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* HOW IT WORKS */}
-      <div id="how" style={{background:"#F5F0EA",padding:"100px 48px"}}>
+      <div id="how" className="lp-how" style={{background:"#F5F0EA",padding:"80px 48px"}}>
         <div style={{maxWidth:1200,margin:"0 auto"}}>
           <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"#C4956A",marginBottom:14}}>How It Works</div>
-          <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(30px,4vw,50px)",color:"#1E1A14",marginBottom:18,maxWidth:640}}>Simple for employees. <em style={{fontStyle:"italic",color:"#4A6741"}}>Powerful</em> for leaders.</h2>
-          <p style={{fontSize:16,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:560,marginBottom:52}}>WellPulse runs quietly in the background — surfacing the signals your leadership team needs to act before problems escalate.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:72,alignItems:"center"}}>
+          <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(28px,4vw,50px)",color:"#1E1A14",marginBottom:16,maxWidth:640}}>Simple for employees. <em style={{fontStyle:"italic",color:"#4A6741"}}>Powerful</em> for leaders.</h2>
+          <p style={{fontSize:15,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:560,marginBottom:44}}>WellPulse runs quietly in the background — surfacing the signals your leadership team needs to act before problems escalate.</p>
+          <div className="lp-how-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:60,alignItems:"center"}}>
             <div>
               {[["Employees check in weekly","A 5-question anonymous survey. Stress, workload, relationships, manager support, balance. 2 minutes. No names. No pressure."],
                 ["Leadership sees the data","Real-time department scores, burnout risk levels, week-over-week trends, and participation rates. Aggregated — never individual."],
                 ["Wild Bloom coaches act on it","Certified coaches use your data to guide sessions, workshops, and leadership calls. Targeted, relevant, and measurable."],
                 ["Wellness improves — measurably","Monthly trend reports show your leadership team exactly how wellness moves over time. Not feelings — data."]
               ].map(([t,d],i)=>(
-                <div key={t} style={{display:"flex",gap:22,padding:"26px 0",borderBottom:i<3?"1px solid #E2D9CE":"none"}}>
-                  <div style={{width:34,height:34,borderRadius:"50%",background:"#1E1A14",color:"#fff",fontSize:13,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>{i+1}</div>
+                <div key={t} style={{display:"flex",gap:18,padding:"22px 0",borderBottom:i<3?"1px solid #E2D9CE":"none"}}>
+                  <div style={{width:30,height:30,borderRadius:"50%",background:"#1E1A14",color:"#fff",fontSize:12,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>{i+1}</div>
                   <div>
-                    <div style={{fontSize:16,fontWeight:600,color:"#1E1A14",marginBottom:5}}>{t}</div>
-                    <div style={{fontSize:14,color:"#6B5D4F",fontWeight:300,lineHeight:1.65}}>{d}</div>
+                    <div style={{fontSize:15,fontWeight:600,color:"#1E1A14",marginBottom:4}}>{t}</div>
+                    <div style={{fontSize:13,color:"#6B5D4F",fontWeight:300,lineHeight:1.65}}>{d}</div>
                   </div>
                 </div>
               ))}
             </div>
-            {/* Check-in mockup */}
-            <div style={{background:"#FDFCF9",border:"1px solid #E2D9CE",borderRadius:12,padding:32,boxShadow:"0 4px 24px rgba(30,26,20,0.08)"}}>
+            <div style={{background:"#FDFCF9",border:"1px solid #E2D9CE",borderRadius:12,padding:28,boxShadow:"0 4px 24px rgba(30,26,20,0.08)"}}>
               <div style={{fontSize:10,fontWeight:700,color:"#4A6741",textTransform:"uppercase",letterSpacing:".1em",marginBottom:5}}>Week 19 · 2026</div>
-              <div style={{fontSize:15,fontWeight:500,color:"#1E1A14",marginBottom:14,lineHeight:1.4}}>How manageable is your workload feeling this week?</div>
+              <div style={{fontSize:14,fontWeight:500,color:"#1E1A14",marginBottom:14,lineHeight:1.4}}>How manageable is your workload feeling this week?</div>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:5}}>
-                <span style={{fontSize:12,color:"#B0A090"}}>1</span>
+                <span style={{fontSize:11,color:"#B0A090"}}>1</span>
                 <div style={{flex:1,height:4,background:"#E2D9CE",borderRadius:2,position:"relative"}}>
                   <div style={{position:"absolute",left:0,top:0,bottom:0,width:"60%",background:"#4A6741",borderRadius:2}}/>
                   <div style={{position:"absolute",left:"60%",top:"50%",transform:"translate(-50%,-50%)",width:16,height:16,borderRadius:"50%",background:"#4A6741",border:"2px solid #fff",boxShadow:"0 2px 6px rgba(0,0,0,0.15)"}}/>
                 </div>
-                <span style={{fontSize:12,color:"#B0A090"}}>10</span>
-                <span style={{fontFamily:"'DM Serif Display',serif",fontSize:26,color:"#4A6741"}}>6</span>
+                <span style={{fontSize:11,color:"#B0A090"}}>10</span>
+                <span style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"#4A6741"}}>6</span>
               </div>
-              <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#B0A090",marginBottom:18}}><span>Overwhelmed</span><span>Very manageable</span></div>
-              <div style={{height:1,background:"#E2D9CE",margin:"16px 0"}}/>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#B0A090",marginBottom:16}}><span>Overwhelmed</span><span>Very manageable</span></div>
+              <div style={{height:1,background:"#E2D9CE",margin:"14px 0"}}/>
               <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:"#4A6741",fontWeight:500}}>
-                <div style={{width:26,height:26,borderRadius:"50%",background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center"}}>✓</div>
+                <div style={{width:24,height:24,borderRadius:"50%",background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12}}>✓</div>
                 Anonymous · Your name is never shared
               </div>
             </div>
@@ -1062,39 +1062,31 @@ function LandingPage({ onSignIn }) {
       </div>
 
       {/* WHO IT'S FOR */}
-      <div id="who" style={{background:"#FDFCF9",padding:"100px 48px",borderTop:"1px solid #E2D9CE",borderBottom:"1px solid #E2D9CE"}}>
+      <div id="who" className="lp-who" style={{background:"#FDFCF9",padding:"80px 48px",borderTop:"1px solid #E2D9CE",borderBottom:"1px solid #E2D9CE"}}>
         <div style={{maxWidth:1200,margin:"0 auto"}}>
           <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"#C4956A",marginBottom:14}}>Who It's For</div>
-          <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(30px,4vw,50px)",color:"#1E1A14",marginBottom:18,maxWidth:760}}>Built for organizations that take their people <em style={{fontStyle:"italic",color:"#4A6741"}}>seriously.</em></h2>
-          <p style={{fontSize:16,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:680,marginBottom:20}}>Burnout has already infiltrated most companies — it's operating quietly beneath the surface of your performance reviews, your turnover numbers, and your team meetings. The organizations winning the next decade aren't waiting for it to become a crisis. They're measuring it. Managing it. And turning culture into a competitive advantage before their competitors do.</p>
-          <p style={{fontSize:16,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:680,marginBottom:52}}>WellPulse is the proactive approach. Real-time wellness data that turns invisible risk into visible, actionable insight — so you can lead your people before the problem leads you.</p>
-
-          {/* BURNOUT DATA STATS */}
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:2,background:"#E2D9CE",borderRadius:12,overflow:"hidden",marginBottom:52}}>
-            {[
-              ["77%","of employees have experienced burnout at their current job — Deloitte"],
-              ["2.6×","more likely to leave their employer when burned out — Gallup"],
-              ["$322B","lost globally each year to burnout-related turnover — WHO"],
-              ["89%","of workers at companies with wellbeing programs are more likely to recommend their employer — American Psychological Association"],
-            ].map(([n,l])=>(
-              <div key={n} style={{background:"#FDFCF9",padding:"28px 24px",textAlign:"center"}}>
-                <div style={{fontFamily:"'DM Serif Display',serif",fontSize:38,color:"#4A6741",lineHeight:1,marginBottom:10}}>{n}</div>
-                <div style={{fontSize:12,color:"#6B5D4F",fontWeight:300,lineHeight:1.6}}>{l}</div>
+          <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(28px,4vw,50px)",color:"#1E1A14",marginBottom:16,maxWidth:760}}>Built for organizations that take their people <em style={{fontStyle:"italic",color:"#4A6741"}}>seriously.</em></h2>
+          <p style={{fontSize:15,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:680,marginBottom:16}}>Burnout has already infiltrated most companies — it's operating quietly beneath the surface of your performance reviews, your turnover numbers, and your team meetings. The organizations winning the next decade aren't waiting for it to become a crisis. They're measuring it. Managing it. And turning culture into a competitive advantage before their competitors do.</p>
+          <p style={{fontSize:15,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:680,marginBottom:44}}>WellPulse is the proactive approach. Real-time wellness data that turns invisible risk into visible, actionable insight — so you can lead your people before the problem leads you.</p>
+          <div className="lp-burnout-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:2,background:"#E2D9CE",borderRadius:12,overflow:"hidden",marginBottom:44}}>
+            {[["77%","of employees have experienced burnout at their current job — Deloitte"],["2.6×","more likely to leave their employer when burned out — Gallup"],["$322B","lost globally each year to burnout-related turnover — WHO"],["89%","of workers at companies with wellbeing programs recommend their employer — APA"]].map(([n,l])=>(
+              <div key={n} style={{background:"#FDFCF9",padding:"24px 18px",textAlign:"center"}}>
+                <div style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(28px,3vw,38px)",color:"#4A6741",lineHeight:1,marginBottom:8}}>{n}</div>
+                <div style={{fontSize:11,color:"#6B5D4F",fontWeight:300,lineHeight:1.6}}>{l}</div>
               </div>
             ))}
           </div>
-
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:2,background:"#E2D9CE",borderRadius:12,overflow:"hidden"}}>
+          <div className="lp-roles" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:2,background:"#E2D9CE",borderRadius:12,overflow:"hidden"}}>
             {[["HR & People Operations","You need early warning signals and data to justify wellness investment to leadership. The numbers are clear — burnout drives turnover, and turnover is expensive. WellPulse gives you the proof and the tools."],
               ["CEOs & Founders","Culture is no longer a soft metric — it's a retention strategy, a performance strategy, and a recruiting advantage. WellPulse keeps a real-time pulse on it so you can lead with confidence, not guesswork."],
               ["Department Leaders","You want to be a good manager but you can't fix what you can't see. WellPulse surfaces what's happening beneath the surface of your weekly standups — before it becomes a resignation."]
             ].map(([t,d])=>(
-              <div key={t} style={{background:"#FDFCF9",padding:"34px 30px"}}>
-                <div style={{width:42,height:42,borderRadius:10,background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14}}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A6741" strokeWidth="1.5" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <div key={t} style={{background:"#FDFCF9",padding:"28px 24px"}}>
+                <div style={{width:38,height:38,borderRadius:9,background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A6741" strokeWidth="1.5" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                 </div>
-                <div style={{fontSize:16,fontWeight:600,color:"#1E1A14",marginBottom:8}}>{t}</div>
-                <div style={{fontSize:14,color:"#6B5D4F",fontWeight:300,lineHeight:1.65}}>{d}</div>
+                <div style={{fontSize:15,fontWeight:600,color:"#1E1A14",marginBottom:6}}>{t}</div>
+                <div style={{fontSize:13,color:"#6B5D4F",fontWeight:300,lineHeight:1.65}}>{d}</div>
               </div>
             ))}
           </div>
@@ -1102,42 +1094,35 @@ function LandingPage({ onSignIn }) {
       </div>
 
       {/* WILD BLOOM COACHING */}
-      <div id="coaching" style={{background:"#2C3D28",padding:"100px 48px"}}>
-        <div style={{maxWidth:1200,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:72,alignItems:"center"}}>
+      <div id="coaching" className="lp-coaching" style={{background:"#2C3D28",padding:"80px 48px"}}>
+        <div className="lp-coaching-grid" style={{maxWidth:1200,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:60,alignItems:"center"}}>
           <div>
             <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".12em",color:"#C4956A",marginBottom:14}}>Wild Bloom Wellness House</div>
-            <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(28px,3.5vw,46px)",color:"#FDFCF9",lineHeight:1.1,marginBottom:18}}>Data tells you where the problem is. <em style={{fontStyle:"italic",color:"#A8C5A0"}}>People help you solve it.</em></h2>
-            <p style={{fontSize:16,color:"rgba(253,252,249,0.55)",fontWeight:300,lineHeight:1.75,marginBottom:28}}>WellPulse is built in partnership with Wild Bloom Wellness House — a certified coaching practice specializing in burnout recovery, stress management, and nervous system regulation.</p>
-
-            {/* PSYCHOLOGICAL SAFETY + RETENTION DATA */}
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:32}}>
-              {[
-                ["50%","of burned-out employees say they would leave for a company that better supports wellbeing — McKinsey"],
-                ["74%","reduction in stress reported by employees in psychologically safe teams — APA"],
-                ["4×","more likely to stay at a company where they feel psychologically safe — Gallup"],
-              ].map(([n,l])=>(
-                <div key={n} style={{display:"flex",alignItems:"center",gap:14,padding:"12px 16px",background:"rgba(255,255,255,0.05)",borderRadius:8,border:"1px solid rgba(255,255,255,0.07)"}}>
-                  <div style={{fontFamily:"'DM Serif Display',serif",fontSize:28,color:"#C4956A",lineHeight:1,flexShrink:0,minWidth:52}}>{n}</div>
+            <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(26px,3.5vw,44px)",color:"#FDFCF9",lineHeight:1.1,marginBottom:16}}>Data tells you where the problem is. <em style={{fontStyle:"italic",color:"#A8C5A0"}}>People help you solve it.</em></h2>
+            <p style={{fontSize:15,color:"rgba(253,252,249,0.55)",fontWeight:300,lineHeight:1.75,marginBottom:24}}>WellPulse is built in partnership with Wild Bloom Wellness House — a certified coaching practice specializing in burnout recovery, stress management, and nervous system regulation.</p>
+            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
+              {[["50%","of burned-out employees would leave for a company that better supports wellbeing — McKinsey"],["74%","reduction in stress in psychologically safe teams — APA"],["4×","more likely to stay at a company where they feel psychologically safe — Gallup"]].map(([n,l])=>(
+                <div key={n} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",background:"rgba(255,255,255,0.05)",borderRadius:8,border:"1px solid rgba(255,255,255,0.07)"}}>
+                  <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"#C4956A",lineHeight:1,flexShrink:0,minWidth:44}}>{n}</div>
                   <div style={{fontSize:12,color:"rgba(253,252,249,0.5)",fontWeight:300,lineHeight:1.5}}>{l}</div>
                 </div>
               ))}
             </div>
-
-            <a href="#demo" style={{padding:"13px 28px",background:"#C4956A",color:"#fff",borderRadius:4,textDecoration:"none",fontSize:14,fontWeight:600,display:"inline-block"}}>Book a Coaching Consultation</a>
+            <a href="#demo" style={{padding:"12px 26px",background:"#C4956A",color:"#fff",borderRadius:4,textDecoration:"none",fontSize:14,fontWeight:600,display:"inline-block"}}>Book a Coaching Consultation</a>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[["Monthly Group Coaching","Facilitated sessions for leadership teams or departments. Stress regulation, communication, team dynamics."],
               ["Nervous System Regulation","Science-backed practices embedded into your workplace culture — not one-time events."],
               ["1-on-1 Confidential Coaching","For high-risk employees and leaders. Fully confidential. Requested anonymously through the platform."],
               ["Leadership Intensives","Off-site retreats for senior teams. Available locally, nationally, and internationally."]
             ].map(([t,d])=>(
-              <div key={t} style={{display:"flex",gap:14,alignItems:"flex-start",padding:18,background:"rgba(255,255,255,0.05)",borderRadius:8,border:"1px solid rgba(255,255,255,0.07)"}}>
-                <div style={{width:34,height:34,borderRadius:8,background:"rgba(255,255,255,0.07)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(253,252,249,0.6)" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              <div key={t} style={{display:"flex",gap:12,alignItems:"flex-start",padding:16,background:"rgba(255,255,255,0.05)",borderRadius:8,border:"1px solid rgba(255,255,255,0.07)"}}>
+                <div style={{width:30,height:30,borderRadius:7,background:"rgba(255,255,255,0.07)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(253,252,249,0.6)" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
                 </div>
                 <div>
-                  <div style={{fontSize:14,fontWeight:600,color:"#FDFCF9",marginBottom:3}}>{t}</div>
-                  <div style={{fontSize:13,color:"rgba(253,252,249,0.45)",fontWeight:300,lineHeight:1.5}}>{d}</div>
+                  <div style={{fontSize:13,fontWeight:600,color:"#FDFCF9",marginBottom:2}}>{t}</div>
+                  <div style={{fontSize:12,color:"rgba(253,252,249,0.45)",fontWeight:300,lineHeight:1.5}}>{d}</div>
                 </div>
               </div>
             ))}
@@ -1146,58 +1131,56 @@ function LandingPage({ onSignIn }) {
       </div>
 
       {/* QUOTE */}
-      <div style={{background:"#C4956A",padding:"72px 48px",textAlign:"center"}}>
-        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(22px,3vw,38px)",color:"#fff",lineHeight:1.3,maxWidth:720,margin:"0 auto 16px"}}>"You can't change what you don't measure. And you can't heal what you won't address."</div>
-        <div style={{fontSize:14,color:"rgba(255,255,255,0.6)",fontWeight:300}}>— Wild Bloom Wellness House</div>
+      <div className="lp-quote" style={{background:"#C4956A",padding:"60px 48px",textAlign:"center"}}>
+        <div style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(20px,3vw,36px)",color:"#fff",lineHeight:1.35,maxWidth:680,margin:"0 auto 14px"}}>"You can't change what you don't measure. And you can't heal what you won't address."</div>
+        <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",fontWeight:300}}>— Wild Bloom Wellness House</div>
       </div>
 
       {/* DEMO FORM */}
-      <div id="demo" style={{background:"#F5F0EA",padding:"110px 48px",textAlign:"center"}}>
-        <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(32px,4vw,56px)",color:"#1E1A14",lineHeight:1.1,marginBottom:16,maxWidth:660,marginLeft:"auto",marginRight:"auto"}}>See WellPulse in action</h2>
-        <p style={{fontSize:17,color:"#6B5D4F",fontWeight:300,lineHeight:1.7,maxWidth:500,margin:"0 auto 44px"}}>Request a live demo and an honest conversation. No pressure. No script.</p>
-        <div style={{background:"#FDFCF9",border:"1px solid #E2D9CE",borderRadius:12,padding:44,maxWidth:540,margin:"0 auto",boxShadow:"0 4px 32px rgba(30,26,20,0.1)",textAlign:"left"}}>
+      <div id="demo" className="lp-demo" style={{background:"#F5F0EA",padding:"80px 48px",textAlign:"center"}}>
+        <h2 style={{fontFamily:"'DM Serif Display',serif",fontSize:"clamp(28px,4vw,52px)",color:"#1E1A14",lineHeight:1.1,marginBottom:14,maxWidth:600,marginLeft:"auto",marginRight:"auto"}}>See WellPulse in action</h2>
+        <p style={{fontSize:15,color:"#6B5D4F",fontWeight:300,lineHeight:1.7,maxWidth:460,margin:"0 auto 36px"}}>Request a live demo and an honest conversation. No pressure. No script.</p>
+        <div className="lp-demo-form" style={{background:"#FDFCF9",border:"1px solid #E2D9CE",borderRadius:12,padding:36,maxWidth:520,margin:"0 auto",boxShadow:"0 4px 32px rgba(30,26,20,0.1)",textAlign:"left"}}>
           {submitted ? (
-            <div style={{textAlign:"center",padding:"36px 20px"}}>
-              <div style={{width:58,height:58,borderRadius:"50%",background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:24}}>✓</div>
-              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:22,color:"#1E1A14",marginBottom:8}}>Request received!</div>
+            <div style={{textAlign:"center",padding:"28px 16px"}}>
+              <div style={{width:52,height:52,borderRadius:"50%",background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px",fontSize:22}}>✓</div>
+              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:20,color:"#1E1A14",marginBottom:8}}>Request received!</div>
               <div style={{fontSize:14,color:"#6B5D4F",fontWeight:300,lineHeight:1.65}}>Miranda from Wild Bloom Wellness House will be in touch within 24 hours.</div>
             </div>
           ) : (
             <>
-              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:22,color:"#1E1A14",marginBottom:4}}>Request a Demo</div>
-              <div style={{fontSize:14,color:"#B0A090",fontWeight:300,marginBottom:24}}>We respond within 24 hours — personally.</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:20,color:"#1E1A14",marginBottom:4}}>Request a Demo</div>
+              <div style={{fontSize:13,color:"#B0A090",fontWeight:300,marginBottom:20}}>We respond within 24 hours — personally.</div>
+              <div className="lp-demo-fields" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}>
                 {[["First Name","firstName","text","Jane"],["Last Name","lastName","text","Smith"],["Work Email","email","email","jane@company.com"],["Company","company","text","Acme Corp"]].map(([l,k,t,p])=>(
                   <div key={k}>
-                    <label style={{display:"block",fontSize:11,fontWeight:600,color:"#6B5D4F",textTransform:"uppercase",letterSpacing:".05em",marginBottom:5}}>{l}</label>
+                    <label style={{display:"block",fontSize:11,fontWeight:600,color:"#6B5D4F",textTransform:"uppercase",letterSpacing:".05em",marginBottom:4}}>{l}</label>
                     <input type={t} value={formData[k]} onChange={e=>setFormData({...formData,[k]:e.target.value})} placeholder={p} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #E2D9CE",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:14,color:"#1E1A14",background:"#F5F0EA",outline:"none"}}/>
                   </div>
                 ))}
-                <div style={{gridColumn:"1/-1"}}>
-                  <label style={{display:"block",fontSize:11,fontWeight:600,color:"#6B5D4F",textTransform:"uppercase",letterSpacing:".05em",marginBottom:5}}>Biggest challenge right now? (optional)</label>
-                  <textarea value={formData.challenge} onChange={e=>setFormData({...formData,challenge:e.target.value})} placeholder="e.g. High turnover and we don't know why..." style={{width:"100%",padding:"10px 12px",border:"1.5px solid #E2D9CE",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:14,color:"#1E1A14",background:"#F5F0EA",outline:"none",resize:"vertical",minHeight:72,lineHeight:1.5}}/>
-                </div>
               </div>
-              <button onClick={handleDemo} disabled={sending} style={{width:"100%",padding:13,background:"#1E1A14",color:"#fff",border:"none",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:15,fontWeight:600,cursor:"pointer",marginTop:14}}>{sending?"Sending...":"Request My Demo →"}</button>
-              <p style={{fontSize:12,color:"#B0A090",fontWeight:300,textAlign:"center",marginTop:12}}>Your information is never shared or sold.</p>
+              <div style={{marginBottom:14}}>
+                <label style={{display:"block",fontSize:11,fontWeight:600,color:"#6B5D4F",textTransform:"uppercase",letterSpacing:".05em",marginBottom:4}}>Biggest challenge right now? (optional)</label>
+                <textarea value={formData.challenge} onChange={e=>setFormData({...formData,challenge:e.target.value})} placeholder="e.g. High turnover and we don't know why..." style={{width:"100%",padding:"10px 12px",border:"1.5px solid #E2D9CE",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:14,color:"#1E1A14",background:"#F5F0EA",outline:"none",resize:"vertical",minHeight:68,lineHeight:1.5}}/>
+              </div>
+              <button onClick={handleDemo} disabled={sending} style={{width:"100%",padding:13,background:"#1E1A14",color:"#fff",border:"none",borderRadius:4,fontFamily:"'DM Sans',sans-serif",fontSize:15,fontWeight:600,cursor:"pointer"}}>{sending?"Sending...":"Request My Demo →"}</button>
+              <p style={{fontSize:12,color:"#B0A090",fontWeight:300,textAlign:"center",marginTop:10}}>Your information is never shared or sold.</p>
             </>
           )}
         </div>
       </div>
 
       {/* FOOTER */}
-      <footer style={{background:"#1E1A14",padding:"56px 48px"}}>
-        <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div>
-            <div style={{fontFamily:"'DM Serif Display',serif",fontSize:20,color:"#fff",marginBottom:5}}>WellPulse</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,0.35)",fontWeight:300}}>Powered by Wild Bloom Wellness House · Miranda@wildbloomwellnesshouse.com</div>
-          </div>
-          <div style={{display:"flex",gap:24}}>
-            {[["How It Works","#how"],["Coaching","#coaching"],["Who It's For","#who"]].map(([l,h])=>(
-              <a key={l} href={h} style={{fontSize:13,color:"rgba(255,255,255,0.35)",textDecoration:"none"}}>{l}</a>
-            ))}
-            <button onClick={onSignIn} style={{fontSize:13,color:"rgba(255,255,255,0.35)",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Sign In</button>
-          </div>
+      <footer className="lp-footer" style={{background:"#1E1A14",padding:"48px 48px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div>
+          <div style={{fontFamily:"'DM Serif Display',serif",fontSize:20,color:"#fff",marginBottom:5}}>WellPulse</div>
+          <div style={{fontSize:12,color:"rgba(255,255,255,0.35)",fontWeight:300}}>Powered by Wild Bloom Wellness House · Miranda@wildbloomwellnesshouse.com</div>
+        </div>
+        <div className="lp-footer-links" style={{display:"flex",gap:24,alignItems:"center"}}>
+          {[["How It Works","#how"],["Coaching","#coaching"],["Who It's For","#who"]].map(([l,h])=>(
+            <a key={l} href={h} style={{fontSize:13,color:"rgba(255,255,255,0.35)",textDecoration:"none"}}>{l}</a>
+          ))}
+          <button onClick={onSignIn} style={{fontSize:13,color:"rgba(255,255,255,0.35)",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Sign In</button>
         </div>
       </footer>
     </div>
