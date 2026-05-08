@@ -1006,7 +1006,7 @@ function LandingPage({ onSignIn }) {
       {/* STATS BAR */}
       <div style={{background:"#1E1A14",padding:"60px 48px"}}>
         <div style={{maxWidth:1200,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(4,1fr)"}}>
-          {[["$1T","Lost annually to workplace stress globally"],["77%","Of employees have experienced burnout at their current job"],["2.6×","More likely to leave when burned out — Gallup"],["2min","To complete a WellPulse check-in"]].map(([n,l])=>(
+          {[["$1T","Lost annually to workplace stress globally"],["68%","Of employees are disengaged at work right now — Gallup"],["15%","Of global GDP lost to presenteeism from poor mental health — WHO"],["2min","To complete a WellPulse check-in"]].map(([n,l])=>(
             <div key={n} style={{textAlign:"center",padding:20,borderRight:"1px solid rgba(255,255,255,0.07)"}}>
               <div style={{fontFamily:"'DM Serif Display',serif",fontSize:44,color:"#C4956A",lineHeight:1,marginBottom:8}}>{n}</div>
               <div style={{fontSize:13,color:"rgba(255,255,255,0.45)",fontWeight:300,lineHeight:1.5}}>{l}</div>
@@ -1075,7 +1075,7 @@ function LandingPage({ onSignIn }) {
               ["77%","of employees have experienced burnout at their current job — Deloitte"],
               ["2.6×","more likely to leave their employer when burned out — Gallup"],
               ["$322B","lost globally each year to burnout-related turnover — WHO"],
-              ["23%","lower absenteeism in companies with high psychological safety — Gallup"],
+              ["89%","of workers at companies with wellbeing programs are more likely to recommend their employer — American Psychological Association"],
             ].map(([n,l])=>(
               <div key={n} style={{background:"#FDFCF9",padding:"28px 24px",textAlign:"center"}}>
                 <div style={{fontFamily:"'DM Serif Display',serif",fontSize:38,color:"#4A6741",lineHeight:1,marginBottom:10}}>{n}</div>
