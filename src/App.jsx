@@ -434,7 +434,9 @@ function AccessGate({ user, children }) {
       const { data } = await supabase.from("companies").select("status, plan, tier, trial_ends_at").eq("code", user.company_code).maybeSingle();
       if (!data) { setStatus("active"); return; }
       setPlan(data.plan);
-      setTier(data.tier || "insights");
+      // Map transform tier to "support" so employees get Get Support page
+      const companyTier = data.tier || "insights";
+      setTier(companyTier === "transform" ? "support" : companyTier);
       if (data.status === "trial" && data.trial_ends_at) {
         const days = Math.ceil((new Date(data.trial_ends_at) - new Date()) / 86400000);
         if (days <= 0) { setStatus("expired"); return; }
@@ -617,8 +619,8 @@ function SuperAdminApp({ user, onLogout }) {
                                   <td><span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:11,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>{c.code}</span></td>
                                   <td><span style={{fontSize:11,fontWeight:600,color:"var(--soft)",textTransform:"capitalize"}}>{c.plan||"trial"}</span></td>
                                   <td>
-                                    <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:c.tier==="support"?"var(--ink)":"var(--surface2)",color:c.tier==="support"?"#fff":"var(--soft)"}}>
-                                      {c.tier==="support"?"Insights + Support":"Insights"}
+                                    <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:c.tier==="transform"?"var(--ink)":c.tier==="optimize"?"var(--wlight)":"var(--surface2)",color:c.tier==="transform"?"#fff":c.tier==="optimize"?"var(--amber)":"var(--soft)"}}>
+                                      {c.tier==="transform"?"Transform":c.tier==="optimize"?"Optimize":"Insight"}
                                     </span>
                                   </td>
                                   <td><span style={{fontSize:11,fontWeight:700,background:statusBg,color:statusColor,padding:"2px 9px",borderRadius:20,textTransform:"capitalize"}}>{c.status||"active"}</span></td>
@@ -632,8 +634,10 @@ function SuperAdminApp({ user, onLogout }) {
                                       {c.status!=="paused" && <button onClick={()=>updateStatus(c.code,"paused",c.plan)} style={{fontSize:11,padding:"3px 8px",background:"var(--amlight)",color:"var(--amber)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Pause</button>}
                                       {c.status!=="cancelled" && <button onClick={()=>{ if(window.confirm("Cancel "+c.name+"? They will lose all access.")) updateStatus(c.code,"cancelled",c.plan); }} style={{fontSize:11,padding:"3px 8px",background:"var(--dlight)",color:"var(--danger)",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>}
                                       <div style={{width:"100%",height:4}}/>
-                                      {c.tier!=="support" && <button onClick={()=>updateTier(c.code,"support")} style={{fontSize:11,padding:"3px 8px",background:"var(--ink)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↑ Upgrade</button>}
-                                      {c.tier==="support" && <button onClick={()=>updateTier(c.code,"insights")} style={{fontSize:11,padding:"3px 8px",background:"var(--surface2)",color:"var(--soft)",border:"1px solid var(--border)",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↓ Downgrade</button>}
+                                      {c.tier!=="optimize" && c.tier!=="transform" && <button onClick={()=>updateTier(c.code,"optimize")} style={{fontSize:11,padding:"3px 8px",background:"var(--amber)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↑ Optimize</button>}
+                                      {c.tier!=="transform" && <button onClick={()=>updateTier(c.code,"transform")} style={{fontSize:11,padding:"3px 8px",background:"var(--ink)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↑ Transform</button>}
+                                      {c.tier==="transform" && <button onClick={()=>updateTier(c.code,"optimize")} style={{fontSize:11,padding:"3px 8px",background:"var(--surface2)",color:"var(--soft)",border:"1px solid var(--border)",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↓ Optimize</button>}
+                                      {(c.tier==="optimize"||c.tier==="transform") && <button onClick={()=>updateTier(c.code,"insights")} style={{fontSize:11,padding:"3px 8px",background:"var(--surface2)",color:"var(--soft)",border:"1px solid var(--border)",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↓ Insight</button>}
                                     </div>
                                   </td>
                                 </tr>
@@ -791,7 +795,7 @@ function SuperAdminApp({ user, onLogout }) {
                       <div style={{background:"var(--alight)",borderRadius:"var(--r)",padding:"8px 12px",fontSize:11,color:"var(--soft)",marginBottom:14,fontWeight:300}}>Best for: Companies serious about retention and long-term performance</div>
                       <div style={{height:1,background:"var(--border)",marginBottom:14}}/>
                       <div style={{fontSize:10,fontWeight:600,color:"var(--faint)",marginBottom:8}}>Everything in Optimize, plus:</div>
-                      {["Leadership consulting and strategy calls","1-on-1 coaching access for leadership or high-risk employees","Custom burnout recovery plans","Priority support and implementation guidance"].map(f=>(
+                      {["Leadership consulting and strategy calls","1-on-1 confidential coaching for red-flagged employees","Employees can request support anonymously via portal","Custom burnout recovery plans","Priority support and implementation guidance"].map(f=>(
                         <div key={f} style={{display:"flex",gap:9,alignItems:"flex-start",marginBottom:8}}>
                           <svg style={{flexShrink:0,marginTop:2}} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5C7A5C" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                           <span style={{fontSize:12,color:"var(--accent)",fontWeight:600,lineHeight:1.4}}>{f}</span>
@@ -826,21 +830,25 @@ function SuperAdminApp({ user, onLogout }) {
                   <div className="card">
                     <div className="ct">Current Company Tiers <div className="ct-line"/></div>
                     <table className="tbl">
-                      <thead><tr><th>Company</th><th>Code</th><th>Current Tier</th><th>Change Tier</th></tr></thead>
+                      <thead><tr><th>Company</th><th>Code</th><th>Current Tier</th><th>Set Tier</th></tr></thead>
                       <tbody>
-                        {companies.map(c=>(
+                        {companies.map(c=>{
+                          const tierLabel = c.tier==="transform"?"Transform":c.tier==="optimize"?"Optimize":"Insight";
+                          const tierColor = c.tier==="transform"?"var(--ink)":c.tier==="optimize"?"var(--amber)":"var(--accent)";
+                          return (
                           <tr key={c.id}>
                             <td style={{fontWeight:500}}>{c.name}</td>
                             <td><span style={{fontFamily:"monospace",background:"var(--bg2)",padding:"2px 8px",borderRadius:4,fontSize:11,letterSpacing:2,fontWeight:700,color:"var(--accent)"}}>{c.code}</span></td>
-                            <td><span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:c.tier==="support"?"var(--ink)":"var(--surface2)",color:c.tier==="support"?"#fff":"var(--soft)"}}>{c.tier==="support"?"Insights + Support":"Insights"}</span></td>
+                            <td><span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:"var(--surface2)",color:tierColor,border:`1px solid ${tierColor}`}}>{tierLabel}</span></td>
                             <td>
-                              <div style={{display:"flex",gap:8}}>
-                                {c.tier!=="support" && <button onClick={()=>updateTier(c.code,"support")} style={{fontSize:12,padding:"5px 14px",background:"var(--ink)",color:"#fff",border:"none",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↑ Upgrade to Support</button>}
-                                {c.tier==="support" && <button onClick={()=>updateTier(c.code,"insights")} style={{fontSize:12,padding:"5px 14px",background:"var(--surface2)",color:"var(--soft)",border:"1px solid var(--border)",borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>↓ Downgrade to Insights</button>}
+                              <div style={{display:"flex",gap:6}}>
+                                {[["insights","Insight","var(--accent)"],["optimize","Optimize","var(--amber)"],["transform","Transform","var(--ink)"]].map(([t,label,col])=>(
+                                  <button key={t} onClick={()=>updateTier(c.code,t)} style={{fontSize:11,padding:"3px 10px",background:c.tier===t?col:"var(--surface2)",color:c.tier===t?"#fff":"var(--soft)",border:`1px solid ${c.tier===t?col:"var(--border)"}`,borderRadius:20,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>{label}</button>
+                                ))}
                               </div>
                             </td>
                           </tr>
-                        ))}
+                        )})}
                       </tbody>
                     </table>
                   </div>
