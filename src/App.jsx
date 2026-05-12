@@ -7,7 +7,7 @@ const SUPABASE_KEY = "sb_publishable_oM_JRsfb8PGe37SN--Yzmg_w0Qr8aIo";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const QUESTIONS = [
-  { id: "stress", label: "How would you rate your stress level this week?", hint: "1 = Very stressed · 10 = Completely at ease" },
+      { id: "stress", label: "How would you rate your stress level this week?", hint: "1 = Very stressed · 10 = Completely at ease" },
   { id: "workload", label: "How manageable is your workload feeling?", hint: "1 = Overwhelmed · 10 = Very manageable" },
   { id: "relationships", label: "How are your relationships with your teammates?", hint: "1 = Strained · 10 = Excellent" },
   { id: "manager", label: "How supported do you feel by your manager?", hint: "1 = Unsupported · 10 = Fully supported" },
@@ -934,9 +934,28 @@ function LandingPage({ onSignIn }) {
     if (!formData.firstName || !formData.email || !formData.company) { alert("Please fill in your name, email, and company."); return; }
     setSending(true);
     try {
-      await fetch("https://formspree.io/f/mjglaryd", { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({ first_name:formData.firstName, last_name:formData.lastName, email:formData.email, company:formData.company, team_size:formData.teamSize, role:formData.role, challenge:formData.challenge, _subject:`Demo Request — ${formData.company}`, _replyto: formData.email }) });
-    } catch(e) {}
-    setSending(false); setSubmitted(true);
+      const fd = new FormData();
+      fd.append("first_name", formData.firstName);
+      fd.append("last_name", formData.lastName);
+      fd.append("email", formData.email);
+      fd.append("company", formData.company);
+      fd.append("team_size", formData.teamSize);
+      fd.append("role", formData.role);
+      fd.append("challenge", formData.challenge);
+      fd.append("_subject", `Demo Request — ${formData.company}`);
+      fd.append("_replyto", formData.email);
+      const res = await fetch("https://formspree.io/f/mjglaryd", {
+        method: "POST",
+        body: fd,
+        headers: { "Accept": "application/json" }
+      });
+      const json = await res.json();
+      console.log("Formspree response:", res.status, json);
+    } catch(err) {
+      console.error("Formspree error:", err);
+    }
+    setSending(false);
+    setSubmitted(true);
   }
 
   return (
@@ -1024,10 +1043,10 @@ function LandingPage({ onSignIn }) {
           <p style={{fontSize:15,color:"#6B5D4F",fontWeight:300,lineHeight:1.75,maxWidth:560,marginBottom:44}}>WellPulse runs quietly in the background — surfacing the signals your leadership team needs to act before problems escalate.</p>
           <div className="lp-how-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:60,alignItems:"center"}}>
             <div>
-              {[["Employees check in weekly","A 5-question anonymous survey. Stress, workload, relationships, manager support, balance. 2 minutes. No names. No pressure."],
-                ["Leadership sees the data","Real-time department scores, burnout risk levels, week-over-week trends, and participation rates. Aggregated — never individual."],
+                                {[["Employees check in weekly","A 5-question anonymous survey. Stress, workload, relationships, manager support, balance. 2 minutes. No names. No pressure."],
+                ["Leadership sees the data","Real-time department scores, burnout risk levels, week-over-week trends, and participation rates. Aggregated, never individual."],
                 ["Wild Bloom coaches act on it","Certified coaches use your data to guide sessions, workshops, and leadership calls. Targeted, relevant, and measurable."],
-                ["Wellness improves — measurably","Monthly trend reports show your leadership team exactly how wellness moves over time. Not feelings — data."]
+                ["Wellness improves, measurably","Monthly trend reports show your leadership team exactly how wellness moves over time. Not feelings. Data."]
               ].map(([t,d],i)=>(
                 <div key={t} style={{display:"flex",gap:18,padding:"22px 0",borderBottom:i<3?"1px solid #E2D9CE":"none"}}>
                   <div style={{width:30,height:30,borderRadius:"50%",background:"#1E1A14",color:"#fff",fontSize:12,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>{i+1}</div>
@@ -1077,9 +1096,9 @@ function LandingPage({ onSignIn }) {
             ))}
           </div>
           <div className="lp-roles" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:2,background:"#E2D9CE",borderRadius:12,overflow:"hidden"}}>
-            {[["HR & People Operations","You need early warning signals and data to justify wellness investment to leadership. The numbers are clear — burnout drives turnover, and turnover is expensive. WellPulse gives you the proof and the tools."],
-              ["CEOs & Founders","Culture is no longer a soft metric — it's a retention strategy, a performance strategy, and a recruiting advantage. WellPulse keeps a real-time pulse on it so you can lead with confidence, not guesswork."],
-              ["Department Leaders","You want to be a good manager but you can't fix what you can't see. WellPulse surfaces what's happening beneath the surface of your weekly standups — before it becomes a resignation."]
+                                  {[["HR & People Operations","You need early warning signals and data to justify wellness investment to leadership. The numbers are clear. Burnout drives turnover, and turnover is expensive. WellPulse gives you the proof and the tools."],
+              ["CEOs & Founders","Culture is no longer a soft metric. It is a retention strategy, a performance strategy, and a recruiting advantage. WellPulse keeps a real-time pulse on it so you can lead with confidence, not guesswork."],
+              ["Department Leaders","You want to be a good manager but you cannot fix what you cannot see. WellPulse surfaces what is happening beneath the surface of your weekly standups before it becomes a resignation."]
             ].map(([t,d])=>(
               <div key={t} style={{background:"#FDFCF9",padding:"28px 24px"}}>
                 <div style={{width:38,height:38,borderRadius:9,background:"#EEF3EE",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
@@ -1111,8 +1130,8 @@ function LandingPage({ onSignIn }) {
             <a href="#demo" style={{padding:"12px 26px",background:"#C4956A",color:"#fff",borderRadius:4,textDecoration:"none",fontSize:14,fontWeight:600,display:"inline-block"}}>Book a Coaching Consultation</a>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {[["Monthly Group Coaching","Facilitated sessions for leadership teams or departments. Stress regulation, communication, team dynamics."],
-              ["Nervous System Regulation","Science-backed practices embedded into your workplace culture — not one-time events."],
+                                  {[["Monthly Group Coaching","Facilitated sessions for leadership teams or departments. Stress regulation, communication, team dynamics."],
+              ["Nervous System Regulation","Science-backed practices embedded into your workplace culture. Not one-time events."],
               ["1-on-1 Confidential Coaching","For high-risk employees and leaders. Fully confidential. Requested anonymously through the platform."],
               ["Leadership Intensives","Off-site retreats for senior teams. Available locally, nationally, and internationally."]
             ].map(([t,d])=>(
